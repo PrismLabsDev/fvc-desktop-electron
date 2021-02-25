@@ -1,0 +1,35 @@
+{
+  "name": "fvc",
+  "version": "1.0.0",
+  "description": "Main FVC user application repo",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:mac": "electron-builder --macos dmg",
+    "build:win": "electron-builder --windows nsis",
+    "build:deb": "electron-builder --linux deb",
+    "build:all": "electron-builder --macos dmg && electron-builder --windows nsis && electron-builder --linux deb"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwoodrow99/fvc.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Jack Woodrow",
+    "email": "jackwoodrow@blueorbitmedia.com",
+    "url": "https://blueorbitmedia.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jwoodrow99/fvc/issues"
+  },
+  "homepage": "https://github.com/jwoodrow99/fvc#readme",
+  "dependencies": {
+    "fs-extra": "^9.1.0"
+  },
+  "devDependencies": {
+    "electron": "^11.3.0",
+    "electron-builder": "^22.9.1"
+  }
+}
