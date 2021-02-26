@@ -31,5 +31,17 @@
   "devDependencies": {
     "electron": "^11.3.0",
     "electron-builder": "^22.9.1"
+  },
+  "build": {
+    "appId": "com.electron.fvc",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "category": "Utility"
+    },
+    "win": {
+      "signingHashAlgorithms": ["sha1", "sha256"]
+    }
   }
 }
