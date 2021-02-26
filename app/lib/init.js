@@ -16,10 +16,7 @@ module.exports = (project, author) => {
     if (fs.existsSync(helper.archiveDir())){
 
     } else {
-
-        // Create archive folders
         fs.mkdirSync(helper.archiveDir());
-        // fs.writeFile(`${helper.currentDir()}/.fvcignore`)
         helper.writeLog(logFileInit);
     }
 }
