@@ -1,6 +1,7 @@
 const fs = require("fs-extra");
 const path = require('path');
 const helper = require('../helper');
+const store = require('../store.js');
 
 function restore(archive_id){
 
@@ -11,11 +12,6 @@ function restore(archive_id){
     archiveContents.forEach(i => {
         fs.copySync(path.join(helper.archiveDir(), archive_id, i), path.join(helper.currentDir(), i));
     });
-
-    console.log(`Working directory restored to previous archive`);
-    console.log(`Archive ID: ${archive_id}`);
-    console.log(`Careated At: ${helper.dateToReadable(logFile.logs[archive_id].created_at)}`);
-    console.log(`Message: ${logFile.logs[archive_id].message}\n`);
 }
 
 function full(archive_id){

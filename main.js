@@ -1,9 +1,7 @@
-const { shell, app, Menu, BrowserWindow, ipcMain } = require('electron');
+const { shell, app, Menu, BrowserWindow, dialog } = require('electron');
 
-ipcMain.on('test-ipc', (event, arg) => {
-   console.log(arg);
-   event.returnValue = 'This is the response';
-})
+const events = require('./app/events.js');
+const store = require('./app/store.js');
 
 const isMac = process.platform === 'darwin';
 
@@ -15,6 +13,8 @@ function createWindow () {
         nodeIntegration: true
         }
     });
+
+    win.webContents.openDevTools()
 
     win.loadFile('./resources/view/index.html');
 }

@@ -1,5 +1,6 @@
 const fs = require("fs-extra");
 const path = require('path');
+const store = require('./store.js');
 
 function logFileTemplate(){
     return {
@@ -11,11 +12,11 @@ function logFileTemplate(){
 }
 
 function currentDir(){
-    return process.cwd();
+    return store.dir;
 }
 
 function currentFolder(){
-    let currentDir = process.cwd();
+    let currentDir = store.dir;
     let folderPathArr = [];
     if (process.platform === "win32"){
         folderPathArr = currentDir.split('\\');
@@ -27,7 +28,7 @@ function currentFolder(){
 }
 
 function archiveDir(){
-    return path.join(process.cwd(), '.fvc');
+    return path.join(store.dir, '.fvc');
 }
 
 function currentDate(){

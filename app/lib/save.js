@@ -1,6 +1,7 @@
 const fs = require("fs-extra");
 const path = require('path');
 const helper = require('../helper');
+const store = require('../store.js');
 
 module.exports =  (message) => {
     let logFile = helper.readLog();
@@ -32,9 +33,4 @@ module.exports =  (message) => {
     }
 
     helper.writeLog(logFile);
-
-    console.log(`Current working state archived`);
-    console.log(`Archive ID: ${createDate}`);
-    console.log(`Careated At: ${readableCreateDate}`);
-    console.log(`Message: ${message}\n`);
 }

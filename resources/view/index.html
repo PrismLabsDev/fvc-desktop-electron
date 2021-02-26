@@ -27,10 +27,11 @@
 
         <h1>FVC GUI Interface</h1>
 
-        <input type="button" id="testBtn" value="Test">
+        <input onclick="setDirectory()" type="button" id="setDirectory" value="Set Directory">
 
         <section class="info">
 
+            <div><strong>Directory: </strong><span id="directory"></span></div>
             <div><strong>Project: </strong><span id="project"></span></div>
             <div><strong>Author: </strong><span id="author"></span></div>
             <div><strong>Created At: </strong><span id="created_at"></span></div>
@@ -44,7 +45,7 @@
 
             <section class='new'>
                 <input type="text" id="archive_message" name="archive_message">
-                <input type="button" id="newArchive" value="Create new archive">
+                <input onclick="newArchive()" type="button" id="newArchive" value="Create new archive">
             </section>
 
             <br>
