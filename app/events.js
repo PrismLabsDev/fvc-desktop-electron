@@ -8,13 +8,13 @@ const helper = require('./helper.js');
 const saveCMD = require('./lib/save.js');
 const restoreCMD = require('./lib/restore.js');
 const destroyCMD = require('./lib/destroy.js');
+const init = require('./lib/init.js');
 
 
 // Events
 ipcMain.on('setDirectory', async (event, data) => {
     let dir = await dialog.showOpenDialog({ properties: ['openDirectory'] });
     store.dir = await dir.filePaths[0];
-    event.returnValue = dir.filePaths[0];
     event.sender.send('refresh', helper.readLog());
 });
 
@@ -37,3 +37,10 @@ ipcMain.on('newArchive', async (event, data) => {
     await saveCMD(data.message);
     event.sender.send('refresh', helper.readLog());
 });
+
+ipcMain.on('init', async (event, data) => {
+    await init(data.project, data.author);
+    event.sender.send('refresh', helper.readLog());
+});
+
+

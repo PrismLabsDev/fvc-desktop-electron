@@ -1,10 +1,13 @@
 const {ipcRenderer, dialog} = require('electron');
 
-
+const store = {};
 
 // Event watch
 ipcRenderer.on('refresh', (event, data) => {
     if(data.logs == null || data.logs == undefined){
+
+        store.dir = data.directory;
+
         $('#directory').text(data.directory);
         $('#project').empty();
         $('#author').empty();
@@ -55,6 +58,16 @@ async function newArchive(){
         message: message
     });
 
+    toggleFlash(`New archive created`);
+}
+
+async function init(){
+    await ipcRenderer.send('init', {
+        author: $('#formAuthor').val(),
+        project: $('#formArchive').val()
+    });
+
+    createArchiveOverlayOff();
     toggleFlash(`New archive created`);
 }
 
@@ -115,4 +128,26 @@ function toggleFlash(message, color = "white", bgColor = "#6495ED") {
     window.setTimeout(() => {
         el.classList.remove('flash-show');
     }, 3000);
+}
+
+function createArchiveOverlayOn() {
+    if(store.dir){
+        document.getElementById("overlay").style.display = "flex";
+        let fullDir = store.dir;
+        let folder = "";
+
+        if(fullDir.includes("\\")){
+            folder = fullDir.split("\\");
+        } else if(fullDir.includes("/")){
+            folder = fullDir.split("/");
+        }
+
+        $('#formArchive').val(folder[folder.length - 1]);
+    } else {
+        toggleFlash(`No directory has been selected`, "white", "tomato");
+    }
+}
+
+function createArchiveOverlayOff() {
+    document.getElementById("overlay").style.display = "none";
 }

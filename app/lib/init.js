@@ -4,18 +4,17 @@ const store = require('../store.js');
 
 module.exports = (project, author) => {
 
+    console.log(author);
+
     let logFileInit = helper.logFileTemplate();
     let createDate = helper.currentDate();
-    let readableCreateDate = helper.dateToReadable(createDate);
 
     // Save inputs to log file
     logFileInit.project = project;
     logFileInit.author = author;
     logFileInit.created_at = createDate;
 
-    if (fs.existsSync(helper.archiveDir())){
-
-    } else {
+    if (!fs.existsSync(helper.archiveDir())){
         fs.mkdirSync(helper.archiveDir());
         helper.writeLog(logFileInit);
     }

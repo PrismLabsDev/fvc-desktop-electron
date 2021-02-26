@@ -39,7 +39,7 @@ function readLog(){
         logFile.directory = currentDir();
         return logFile;
     } else {
-        return {dir: currentDir()};
+        return {directory: currentDir()};
     }
 }
 

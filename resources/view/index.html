@@ -31,6 +31,7 @@
         <h1>FVC GUI Interface</h1>
 
         <input onclick="setDirectory()" type="button" id="setDirectory" value="Set Directory">
+        <input onclick="createArchiveOverlayOn()" type="button" id="createArchive" value="Create Archive">
 
         <br><br>
 
@@ -61,5 +62,21 @@
         </section>
 
         <div id="flash"></div>
+        <div id="overlay">
+            <div class="form">
+                <input type="text" name="author" id="formAuthor" placeholder="John Doe"> <br>
+                <label for="author">Author Name</label> <br><br>
+
+                <input type="text" name="archive" id="formArchive" placeholder="default"> <br>
+                <label for="archive">Archive Name</label> <br><br>
+                
+                <br>
+
+                <div class="button">
+                    <input onclick="createArchiveOverlayOff()" type="button" value="Cancel">
+                    <input onclick="init()" type="button" value="Submit">
+                </div>
+            </div>
+        </div>
     </body>
 </html>
