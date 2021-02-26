@@ -11,10 +11,9 @@ const destroyCMD = require('./lib/destroy.js');
 
 
 // Events
-
 ipcMain.on('setDirectory', async (event, data) => {
     let dir = await dialog.showOpenDialog({ properties: ['openDirectory'] });
-    store.dir = dir.filePaths[0];
+    store.dir = await dir.filePaths[0];
     event.returnValue = dir.filePaths[0];
     event.sender.send('refresh', helper.readLog());
 });

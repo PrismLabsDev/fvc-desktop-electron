@@ -6,6 +6,7 @@
 
 body {
     max-width: 500px;
+    background-color: white;
 }
 
 .new {
@@ -74,8 +75,8 @@ button:hover{
     transition: opacity 1s ease-out;
     opacity: 0;
 
-    color: white;
-    background-color: #6495ED;
+    /* color: white;
+    background-color: #6495ED; */
 
     border: none;
     border-radius: 5px;

@@ -4,7 +4,18 @@ const {ipcRenderer, dialog} = require('electron');
 
 // Event watch
 ipcRenderer.on('refresh', (event, data) => {
-    refreshData(data);
+    if(data.logs == null || data.logs == undefined){
+        $('#directory').text(data.directory);
+        $('#project').empty();
+        $('#author').empty();
+        $('#created_at').empty();
+
+        $("#archive_records").empty();
+
+        toggleFlash(`FVC archive does not exist in directory`, "white", "tomato");
+    } else {
+        refreshData(data);
+    }
 });
 
 
@@ -92,9 +103,12 @@ function refreshData(data){
     });
 }
 
-function toggleFlash(message) {
+function toggleFlash(message, color = "white", bgColor = "#6495ED") {
     let el = document.getElementById("flash");
     el.innerHTML = message;
+
+    el.style.color = color;
+    el.style.backgroundColor = bgColor;
 
     el.classList.add('flash-show');
 

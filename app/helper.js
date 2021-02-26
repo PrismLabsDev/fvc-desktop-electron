@@ -15,18 +15,6 @@ function currentDir(){
     return store.dir;
 }
 
-function currentFolder(){
-    let currentDir = currentDir();
-    let folderPathArr = [];
-    if (process.platform === "win32"){
-        folderPathArr = currentDir.split('\\');
-    } else {
-        folderPathArr = currentDir.split('/');
-    }
-    
-    return folderPathArr[folderPathArr.length - 1];
-}
-
 function archiveDir(){
     return path.join(currentDir(), '.fvc');
 }
@@ -42,10 +30,17 @@ function dateToReadable(date){
 }
 
 function readLog(){
-    let logFileRaw = fs.readFileSync(path.join(currentDir(), '.fvc', 'log.json'));
-    let logFile = JSON.parse(logFileRaw);
-    logFile.directory = currentDir();
-    return logFile;
+
+    let archiveExists = fs.existsSync(path.join(currentDir(), '.fvc', 'log.json'));
+
+    if(archiveExists){
+        let logFileRaw = fs.readFileSync(path.join(currentDir(), '.fvc', 'log.json'));
+        let logFile = JSON.parse(logFileRaw);
+        logFile.directory = currentDir();
+        return logFile;
+    } else {
+        return {dir: currentDir()};
+    }
 }
 
 function writeLog(logObj){
@@ -112,7 +107,6 @@ function getIgnoreFiles(dirPath = currentDir()){
 module.exports = {
     logFileTemplate,
     currentDir,
-    currentFolder,
     archiveDir,
     currentDate,
     dateToReadable,
