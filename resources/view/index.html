@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script>
+            if (typeof module === 'object') {
+                window.module = module; module = undefined;
+            }
+        </script>
+
+        <script src="../lib/jQuery/jQuery.min.js"></script>
+        <script defer src="../js/action.js"></script>
+
+        <link rel="stylesheet" href="../css/main.css">
+
+        <script>
+            if (window.module){
+                module = window.module;
+            }
+        </script>
+
+        <title>FVC GUI Interface</title>
+    </head>
+    <body>
+
+        <h1>FVC GUI Interface</h1>
+
+        <input onclick="setDirectory()" type="button" id="setDirectory" value="Set Directory">
+
+        <br><br>
+
+        <section class="info">
+
+            <div><strong>Directory: </strong><span id="directory"></span></div>
+            <div><strong>Project: </strong><span id="project"></span></div>
+            <div><strong>Author: </strong><span id="author"></span></div>
+            <div><strong>Created At: </strong><span id="created_at"></span></div>
+
+        </section>
+
+        <br>
+
+        <section class="logs">
+            <h2>Archive Records</h2>
+
+            <section class='new'>
+                <input type="text" id="archive_message" name="archive_message">
+                <input onclick="newArchive()" type="button" id="newArchive" value="Create new archive">
+            </section>
+
+            <br>
+
+            <div class="scroll" id="archive_records">
+            </div>
+
+        </section>
+
+        <div id="flash"></div>
+    </body>
+</html>
