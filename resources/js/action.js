@@ -2,35 +2,48 @@ const {ipcRenderer, dialog} = require('electron');
 
 
 
+// Event watch
+ipcRenderer.on('refresh', (event, data) => {
+    refreshData(data);
+});
+
+
+
 // Event dispatch (Equivelent to request)
 async function setDirectory() {
-    let res = await ipcRenderer.sendSync('setDirectory');
-    let data = await ipcRenderer.sendSync('getData');
-    refreshData(data);
+    let dir = await ipcRenderer.send('setDirectory');
 }
 
 async function restore(key){
-    let data = await ipcRenderer.sendSync('restore', String(key));
-    refreshData(data);
+    await ipcRenderer.send('restore', {
+        archiveId: String(key)
+    });
+
     toggleFlash(`Archive restored to ${key}`);
 }
 
 async function restoreF(key){
-    let data = await ipcRenderer.sendSync('restoreFull', String(key));
-    refreshData(data);
+    await ipcRenderer.send('restoreFull', {
+        archiveId: String(key)
+    });
+
     toggleFlash(`Archive FULLY restored to ${key}`);
 }
 
 async function destroy(key){
-    let data = await ipcRenderer.sendSync('destroy', String(key));
-    refreshData(data);
+    await ipcRenderer.send('destroy', {
+        archiveId: String(key)
+    });
+
     toggleFlash(`Archive was destroyed ${key}`);
 }
 
 async function newArchive(){
     let message = $("#archive_message").val();
-    let data = await ipcRenderer.sendSync('newArchive', message);
-    refreshData(data);
+    await ipcRenderer.send('newArchive', {
+        message: message
+    });
+
     toggleFlash(`New archive created`);
 }
 
@@ -47,6 +60,7 @@ function refreshData(data){
 
     let logs = data.logs;
 
+    $('#directory').text(data.directory);
     $('#project').text(data.project);
     $('#author').text(data.author);
     $('#created_at').text(dateToReadable(data.created_at));

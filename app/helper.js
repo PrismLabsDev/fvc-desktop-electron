@@ -16,7 +16,7 @@ function currentDir(){
 }
 
 function currentFolder(){
-    let currentDir = store.dir;
+    let currentDir = currentDir();
     let folderPathArr = [];
     if (process.platform === "win32"){
         folderPathArr = currentDir.split('\\');
@@ -28,7 +28,7 @@ function currentFolder(){
 }
 
 function archiveDir(){
-    return path.join(store.dir, '.fvc');
+    return path.join(currentDir(), '.fvc');
 }
 
 function currentDate(){
@@ -43,7 +43,9 @@ function dateToReadable(date){
 
 function readLog(){
     let logFileRaw = fs.readFileSync(path.join(currentDir(), '.fvc', 'log.json'));
-    return JSON.parse(logFileRaw);
+    let logFile = JSON.parse(logFileRaw);
+    logFile.directory = currentDir();
+    return logFile;
 }
 
 function writeLog(logObj){
