@@ -16,7 +16,11 @@ function currentDir(){
 }
 
 function archiveDir(){
-    return path.join(currentDir(), '.fvc');
+    if(currentDir() != undefined){
+        return path.join(currentDir(), '.fvc');
+    } else {
+        return undefined;
+    }
 }
 
 function currentDate(){

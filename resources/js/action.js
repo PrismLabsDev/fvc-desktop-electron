@@ -71,6 +71,16 @@ async function init(){
     toggleFlash(`New archive created`);
 }
 
+async function destroyArchive(){
+    let status = await ipcRenderer.send('destroyArchive', {});
+
+    if(status){
+        toggleFlash(`FVC Archive was destroyed`);
+    } else {
+        toggleFlash(`FVC archive could not be destroyed`, "white", "tomato");
+    }
+}
+
 
 
 // Helper Functions

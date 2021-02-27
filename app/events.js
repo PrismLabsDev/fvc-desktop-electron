@@ -43,4 +43,10 @@ ipcMain.on('init', async (event, data) => {
     event.sender.send('refresh', helper.readLog());
 });
 
+ipcMain.on('destroyArchive', async (event, data) => {
+    let status = await destroyCMD.archive();
+    event.returnValue = status;
+    status ? event.sender.send('refresh', helper.readLog()) : false;
+});
+
 

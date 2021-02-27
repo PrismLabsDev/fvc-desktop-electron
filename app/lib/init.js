@@ -4,8 +4,6 @@ const store = require('../store.js');
 
 module.exports = (project, author) => {
 
-    console.log(author);
-
     let logFileInit = helper.logFileTemplate();
     let createDate = helper.currentDate();
 
