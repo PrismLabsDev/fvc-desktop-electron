@@ -2,9 +2,14 @@ const {ipcRenderer, dialog} = require('electron');
 
 const store = {};
 
+// Enable action button
+$(document).ready(function(){
+    $('.fixed-action-btn').floatingActionButton();
+});
+
 // Event watch
 ipcRenderer.on('refresh', (event, data) => {
-    if(data.logs == null || data.logs == undefined){
+    if(!data.logs){
 
         store.dir = data.directory;
 
@@ -13,9 +18,9 @@ ipcRenderer.on('refresh', (event, data) => {
         $('#author').empty();
         $('#created_at').empty();
 
-        $("#archive_records").empty();
+        $("#log-collection").empty();
 
-        toggleFlash(`FVC archive does not exist in directory`, "white", "tomato");
+        M.toast({html: `FVC archive does not exist in directory`});
     } else {
         refreshData(data);
     }
@@ -33,7 +38,7 @@ async function restore(key){
         archiveId: String(key)
     });
 
-    toggleFlash(`Archive restored to ${key}`);
+    M.toast({html: `Archive restored to ${key}`});
 }
 
 async function restoreF(key){
@@ -41,7 +46,7 @@ async function restoreF(key){
         archiveId: String(key)
     });
 
-    toggleFlash(`Archive FULLY restored to ${key}`);
+    M.toast({html: `Archive FULLY restored to ${key}`});
 }
 
 async function destroy(key){
@@ -49,16 +54,16 @@ async function destroy(key){
         archiveId: String(key)
     });
 
-    toggleFlash(`Archive was destroyed ${key}`);
+    M.toast({html: `Archive was destroyed ${key}`});
 }
 
 async function newArchive(){
-    let message = $("#archive_message").val();
     await ipcRenderer.send('newArchive', {
-        message: message
+        message: $('#new-record-overlay #message').val()
     });
 
-    toggleFlash(`New archive created`);
+    createRecordOverlayOff();
+    M.toast({html: `New archive created`});
 }
 
 async function init(){
@@ -68,16 +73,16 @@ async function init(){
     });
 
     createArchiveOverlayOff();
-    toggleFlash(`New archive created`);
+    M.toast({html: `New archive created`});
 }
 
 async function destroyArchive(){
     let status = await ipcRenderer.send('destroyArchive', {});
 
     if(status){
-        toggleFlash(`FVC Archive was destroyed`);
+        M.toast({html: `FVC Archive was destroyed`});
     } else {
-        toggleFlash(`FVC archive could not be destroyed`, "white", "tomato");
+        M.toast({html: `FVC archive could not be destroyed`});
     }
 }
 
@@ -103,26 +108,29 @@ function refreshData(data){
         return b-a;
     });
 
-    $("#archive_records").empty();
+    $("#log-collection").empty();
 
     keys.forEach((key) => {
         let log = logs[key];
 
         let tableRecordTemplate=`
-            <div class="card" id="${key}">
-                <p><strong>ID:</strong> ${key}</p>
-                <p><strong>Created At:</strong> ${dateToReadable(log.created_at)}</p>
-                <p><strong>Message:</strong> ${log.message}</p>
+            <div class="card record" id="${key}">
+                <div class="log-info">
+                    <p><strong>ID:</strong> ${key}</p>
+                    <p><strong>Created At:</strong> ${dateToReadable(log.created_at)}</p>
+                </div>
 
-                <hr>
+                <div class="log-actions">
+                    <button class="hoverable waves-effect waves-light btn-small blue" onclick="restore(${key})"><img src="../img/icon/book-arrow-left-outline.png"></button>
+                    <button class="hoverable waves-effect waves-light btn-small indigo" onclick="restoreF(${key})"><img src="../img/icon/book-arrow-left.png"></button>
+                    <button class="hoverable waves-effect waves-light btn-small blue-grey" onclick="destroy(${key})"><img src="../img/icon/trash-can.png"></button>
+                </div>
 
-                <button onclick="restore(${key})" id="buttonRestore">Restore</button>
-                <button onclick="restoreF(${key})" id="buttonRestoreF">Restore --full</button>
-                <button onclick="destroy(${key})" id="buttonDestroy">Destroy</button>
+                <div class="message">${log.message}</div>
             </div>
         `;
 
-        $(tableRecordTemplate).appendTo( "#archive_records" );
+        $(tableRecordTemplate).appendTo( "#log-collection" );
     });
 }
 
@@ -142,7 +150,7 @@ function toggleFlash(message, color = "white", bgColor = "#6495ED") {
 
 function createArchiveOverlayOn() {
     if(store.dir){
-        document.getElementById("overlay").style.display = "flex";
+        document.getElementById("new-archive-overlay").style.display = "flex";
         let fullDir = store.dir;
         let folder = "";
 
@@ -154,10 +162,23 @@ function createArchiveOverlayOn() {
 
         $('#formArchive').val(folder[folder.length - 1]);
     } else {
-        toggleFlash(`No directory has been selected`, "white", "tomato");
+        M.toast({html: `No directory has been selected`});
     }
 }
 
 function createArchiveOverlayOff() {
-    document.getElementById("overlay").style.display = "none";
+    document.getElementById("new-archive-overlay").style.display = "none";
 }
+
+function createRecordOverlayOn() {
+    if(store.dir){
+        document.getElementById("new-record-overlay").style.display = "flex";
+    } else {
+        M.toast({html: `No directory has been selected`});
+    }
+}
+
+function createRecordOverlayOff() {
+    document.getElementById("new-record-overlay").style.display = "none";
+}
+

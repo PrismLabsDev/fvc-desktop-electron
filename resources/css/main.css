@@ -10,96 +10,136 @@ body {
     background-color: white;
 }
 
-label {
-    font-size: 0.8em;
+main {
+    display: grid;
+    grid-template-columns: 400px 100%;
+    grid-template-rows: 100vh;
+    grid-template-areas:
+    'logs info';
 }
 
-.new {
+li {
+    list-style-type: none;
+}
+
+img {
+    width: 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+textarea {
     width: 100%;
-}
-
-input[type=text] {
-    width: 100%;
-    padding: 5px;
-    margin: 5px 0px;
+    height: 150px;
+    padding: 12px 20px;
     box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
 }
 
-input[type=button] {
-    width: auto;
-    padding: 5px 10px;
-    box-sizing: border-box;
-    border: none;
-    border-radius: 2.5px;
-    background-color: #6495ED;
-    color: white;
-}
 
-input[type=button]:hover {
-    background-color: #1858cd;
-}
 
-button {
-    padding: 10px;
-    box-sizing: border-box;
-    border: none;
-    border-radius: 5px;
-    background-color: #6495ED;
-    color: white;
-}
 
-button:hover{
-    background-color: #1858cd;
-}
 
-.scroll {
-    overflow-y: auto;
-    height: 400px;
-    outline: 2px solid #eee;
-}
 
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    width: 90%;
-    margin: 5px auto;
-    padding: 10px;
-    border-radius: 2.5px;
-}
+main .logs {
+    grid-area: logs;
 
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-.card p {
-    padding: 5px;
+    padding: 0px;
     margin: 0px;
 }
 
-#flash {
-    display: block;
-    transition: opacity 1s ease-out;
-    opacity: 0;
+main .logs > div {
+    padding: 0px 10px;
+    margin: 0px;
 
-    /* color: white;
-    background-color: #6495ED; */
+    height: 100vh;
+    background-color: #dddddd;
+}
 
-    border: none;
-    border-radius: 2.5px;
-    
-    padding: 15px;
+main .logs > div .record {
+    display: grid;
+    grid-template-columns: 4 1;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+    'log-info log-actions'
+    'message message';
+    column-gap: 10px;
+    row-gap: 10px;
+    padding: 10px;
+}
 
-    position: fixed;
+main .logs > div .record .log-info {
+    grid-area: log-info;
+}
+
+main .logs > div .record .log-actions {
+    grid-area: log-actions;
+
+    display: flex;
+    flex-flow: column wrap;
+    align-content: flex-end;
+}
+
+main .logs > div .record .message {
+    grid-area: message;
+    padding: 5px 10px;
+    background-color: #eeeeee;
+}
+
+
+
+
+main .info {
+    grid-area: info;
+
+    margin-left: 5px;
+}
+
+main .info .fixed-action-btn img {
+    width: 40px;
+}
+
+main .info .fixed-action-btn ul img {
+    width: 20px;
+}
+
+
+
+
+
+/* Custom classes */
+
+.scroll {
+    overflow-y: auto;
+}
+
+
+
+/* Toast */
+/* #toast-container {
     bottom: 20px;
     right: 20px;
+    left: auto;
+} */
+
+#toast-container {
+    bottom: 20px;
+    right: auto;
+    left: 20px;
 }
 
-#flash.flash-show {
-    transition: none;
-    opacity: 0.8;
+.toast-warning {
+    color: white;
+    background-color: tomato;
 }
 
-#overlay {
+
+
+/* Overlay */
+#new-archive-overlay {
     position: fixed; /* Sit on top of the page content */
     display: none; /* Hidden by default */
     width: 100%; /* Full width (cover the whole page) */
@@ -116,7 +156,7 @@ button:hover{
     justify-content: center;
 }
 
-#overlay > div {
+#new-archive-overlay > div {
     width: 500px;
     height: auto;
     background-color: white;
@@ -125,14 +165,54 @@ button:hover{
     padding: 25px;
 }
 
-#overlay > div > .button {
+#new-archive-overlay > div > .button {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-evenly;
 }
 
-#overlay > div > .button > input[type=button] {
+#new-archive-overlay > div > .button > input[type=button] {
+    width: 30%;
+    font-size: 1em;
+}
+
+
+/* Overlay */
+#new-record-overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+
+    align-items: center;
+    justify-content: center;
+}
+
+#new-record-overlay > div {
+    width: 500px;
+    height: auto;
+    background-color: white;
+
+    border-radius: 2.5px;
+    padding: 25px;
+}
+
+#new-record-overlay > div > .button {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+}
+
+#new-record-overlay > div > .button > input[type=button] {
     width: 30%;
     font-size: 1em;
 }
