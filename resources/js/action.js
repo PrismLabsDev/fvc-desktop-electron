@@ -2,11 +2,6 @@ const {ipcRenderer, dialog} = require('electron');
 
 const store = {};
 
-// Enable action button
-$(document).ready(function(){
-    $('.fixed-action-btn').floatingActionButton();
-});
-
 // Event watch
 ipcRenderer.on('refresh', (event, data) => {
     if(!data.logs){

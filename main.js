@@ -1,4 +1,4 @@
-const { shell, app, Menu, BrowserWindow, dialog } = require('electron');
+const { shell, app, Menu, BrowserWindow, dialog, ipcMain} = require('electron');
 
 const events = require('./app/events.js');
 const store = require('./app/store.js');
@@ -7,8 +7,8 @@ const isMac = process.platform === 'darwin';
 
 function createWindow () {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 900,
+        height: 600 + 22,
         webPreferences: {
         nodeIntegration: true
         }
@@ -16,7 +16,7 @@ function createWindow () {
 
     // win.webContents.openDevTools()
 
-    win.loadFile('./resources/view/index.html');
+    win.loadFile('./resources/view/index1.html');
 }
 
 const menu = Menu.buildFromTemplate([
@@ -38,7 +38,16 @@ const menu = Menu.buildFromTemplate([
     {
         label: 'File',
         submenu: [
-            isMac ? { role: 'close' } : { role: 'quit' }
+            isMac ? { role: 'close' } : { role: 'quit' },
+            { type: 'separator' },
+            {
+                label: 'Open', 
+                click: async () => {    
+                    let dir = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+                    store.dir = await dir.filePaths[0];
+                    ipcMain.send('refresh', helper.readLog());
+                }
+            }
         ]
     },
 

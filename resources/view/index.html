@@ -11,9 +11,7 @@
         </script>
 
         <script src="../lib/jQuery/jQuery.min.js"></script>
-        <script src="../lib/materialize/materialize.min.js"></script>
 
-        <link rel="stylesheet" href="../lib/materialize/materialize.min.css">
         <link rel="stylesheet" href="../css/main.css">
 
         <script defer src="../js/action.js"></script>
@@ -26,68 +24,119 @@
 
         <title>FVC GUI Interface</title>
     </head>
+
     <body>
         <main>
-            <section class="logs">
-                <div class="scroll" id="log-collection"></ul>
-            </section>
+            <div id="top-bar">
+            </div>
 
-            <section class="info">
-
-                <div><strong>Directory: </strong><span id="directory"></span></div>
-                <div><strong>Project: </strong><span id="project"></span></div>
-                <div><strong>Author: </strong><span id="author"></span></div>
-                <div><strong>Created At: </strong><span id="created_at"></span></div>
-
-                <div class="fixed-action-btn">
-                    <div class="hoverable waves-effect waves-light btn-floating btn-large red" onclick="createRecordOverlayOn()">
-                        <img src="../img/icon/content-save.png">
-                    </div>
-                    <ul>
-                        <li><button class="hoverable waves-effect waves-light btn-floating blue" onclick="setDirectory()"><img src="../img/icon/folder-open.png"></button></li>
-                        <li><button class="hoverable waves-effect waves-light btn-floating green" onclick="createArchiveOverlayOn()"><img src="../img/icon/plus-circle.png"></button></li>
-                        <li><button class="hoverable waves-effect waves-light btn-floating blue-grey" onclick="destroyArchive()"><img src="../img/icon/trash-can.png"></button></li>
-                    </ul>
+            <div id="records">
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
                 </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+                <div class="record">
+                    <div>Summary</div>
+                    <div>Date</div>
+                </div>
+            </div>
 
-            </section>
+            <div id="new-record">
+                <input type="text" name="summary" id="summary" placeholder="Summary (required)">
+                <textarea placeholder="Description" id="message"></textarea>
+                <button onclick="">Create new <strong>Record</strong></button>
+            </div>
+
+            <div id="details">
+            </div>
         </main>
-
-
-
-        <!-- Global -->
-        <div id="flash"></div>
-
-        <div id="new-archive-overlay">
-            <div class="form">
-                <input type="text" name="author" id="formAuthor" placeholder="John Doe"> <br>
-                <label for="author">Author Name</label> <br><br>
-
-                <input type="text" name="archive" id="formArchive" placeholder="default"> <br>
-                <label for="archive">Archive Name</label> <br><br>
-                
-                <br>
-
-                <div class="button">
-                    <button class="btn waves-effect waves-light red" onclick="createArchiveOverlayOff()">Cancel</button>
-                    <button class="btn waves-effect waves-light blue" onclick="init()">Submit</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="new-record-overlay">
-            <div class="form">
-                <label for="author">Log Message</label> <br>
-                <textarea id="message"></textarea> <br><br>
-                
-                <br>
-
-                <div class="button">
-                    <button class="btn waves-effect waves-light red" onclick="createRecordOverlayOff()">Cancel</button>
-                    <button class="btn waves-effect waves-light blue" onclick="newArchive()">Submit</button>
-                </div>
-            </div>
-        </div>
-
     </body>
 </html>
