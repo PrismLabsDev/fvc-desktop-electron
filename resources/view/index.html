@@ -11,9 +11,7 @@
         </script>
 
         <script src="../lib/jQuery/jQuery.min.js"></script>
-        <script src="../lib/materialize/materialize.min.js"></script>
 
-        <link rel="stylesheet" href="../lib/materialize/materialize.min.css">
         <link rel="stylesheet" href="../css/main.css">
 
         <script defer src="../js/action.js"></script>
@@ -26,68 +24,96 @@
 
         <title>FVC GUI Interface</title>
     </head>
+
     <body>
         <main>
-            <section class="logs">
-                <div class="scroll" id="log-collection"></ul>
-            </section>
-
-            <section class="info">
-
-                <div><strong>Directory: </strong><span id="directory"></span></div>
-                <div><strong>Project: </strong><span id="project"></span></div>
-                <div><strong>Author: </strong><span id="author"></span></div>
-                <div><strong>Created At: </strong><span id="created_at"></span></div>
-
-                <div class="fixed-action-btn">
-                    <div class="hoverable waves-effect waves-light btn-floating btn-large red" onclick="createRecordOverlayOn()">
-                        <img src="../img/icon/content-save.png">
-                    </div>
-                    <ul>
-                        <li><button class="hoverable waves-effect waves-light btn-floating blue" onclick="setDirectory()"><img src="../img/icon/folder-open.png"></button></li>
-                        <li><button class="hoverable waves-effect waves-light btn-floating green" onclick="createArchiveOverlayOn()"><img src="../img/icon/plus-circle.png"></button></li>
-                        <li><button class="hoverable waves-effect waves-light btn-floating blue-grey" onclick="destroyArchive()"><img src="../img/icon/trash-can.png"></button></li>
-                    </ul>
+            <div id="top-bar">
+                <div id="archve-controls">
+                    <svg onclick="setDirectory()" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                    <svg class="green" onclick="overlayOn()" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder-plus"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+                    <svg class="red" onclick="destroyArchive()" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder-minus"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="9" y1="14" x2="15" y2="14"></line></svg>
                 </div>
+                <div>
+                    <p class="label">Project Name</p>
+                    <p id="project"></p>
+                </div>
+                <div>
+                    <p class="label">Author Name</p>
+                    <p id="author"></p>
+                </div>
+                <div>
+                    <p class="label">Directory</p>
+                    <p id="directory"></p>
+                </div>
+                <div>
+                    <p class="label">Date Created</p>
+                    <p id="created_at"></p>
+                </div>
+            </div>
 
-            </section>
+            <div id="records"></div>
+
+            <div id="new-record">
+                <input type="text" name="summary" id="summary" placeholder="Summary (required)">
+                <textarea placeholder="Description" id="description"></textarea>
+                <button onclick="createRecord()">Create new <strong>Record</strong></button>
+            </div>
+
+            <div id="details">
+                <div id="controls">
+                    <svg onclick="restoreRecordFull()" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-left"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+                    <svg onclick="restoreRecord()" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <svg class="red" onclick="destroyRecord()" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </div>
+                <div id="info">
+
+                    <h1>Archive Record Information</h1>
+
+                    <div>
+                        <p class="label">ID</p>
+                        <p id="id"></p>
+                    </div>
+
+                    <div>
+                        <p class="label">Date Created</p>
+                        <p id="created_at"></p>
+                    </div>
+
+                    <div>
+                        <p class="label">Summary</p>
+                        <p id="summary"></p>
+                    </div>
+
+                    <div>
+                        <p class="label">Description</p>
+                        <p id="description"></p>
+                    </div>
+                </div>
+            </div>
         </main>
 
+        <div id="overlay">
+            <div id="container">
+                <div>
+                    <p class="label">Author Name</p>
+                    <input type="text" name="archive-author" id="archive-author" placeholder="John Doe">
+                </div>
 
+                <div>
+                    <p class="label">Archive Name</p>
+                    <input type="text" name="archive-name" id="archive-name" placeholder="My Cool Project">
+                </div>
 
-        <!-- Global -->
-        <div id="flash"></div>
-
-        <div id="new-archive-overlay">
-            <div class="form">
-                <input type="text" name="author" id="formAuthor" placeholder="John Doe"> <br>
-                <label for="author">Author Name</label> <br><br>
-
-                <input type="text" name="archive" id="formArchive" placeholder="default"> <br>
-                <label for="archive">Archive Name</label> <br><br>
-                
-                <br>
-
-                <div class="button">
-                    <button class="btn waves-effect waves-light red" onclick="createArchiveOverlayOff()">Cancel</button>
-                    <button class="btn waves-effect waves-light blue" onclick="init()">Submit</button>
+                <div id="overlay-controls">
+                    <button class="red" onclick="overlayOff()"><strong>Cancel</strong></button>
+                    <button onclick="createArchive()"><strong>Create</strong></button>
                 </div>
             </div>
         </div>
 
-        <div id="new-record-overlay">
-            <div class="form">
-                <label for="author">Log Message</label> <br>
-                <textarea id="message"></textarea> <br><br>
-                
-                <br>
-
-                <div class="button">
-                    <button class="btn waves-effect waves-light red" onclick="createRecordOverlayOff()">Cancel</button>
-                    <button class="btn waves-effect waves-light blue" onclick="newArchive()">Submit</button>
-                </div>
-            </div>
+        <div id="flash">
+            <p id="message"></p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
         </div>
-
     </body>
 </html>

@@ -3,7 +3,11 @@ const path = require('path');
 const helper = require('../helper');
 const store = require('../store.js');
 
-module.exports =  (message) => {
+module.exports =  (data) => {
+
+    let summary = data.summary;
+    let description = data.description;
+
     let logFile = helper.readLog();
     let createDate = helper.currentDate();
     let readableCreateDate = helper.dateToReadable(createDate);
@@ -29,7 +33,8 @@ module.exports =  (message) => {
     // Add log file entry
     logFile.logs[createDate] = {
         created_at: createDate,
-        message: message
+        summary: summary,
+        description: description
     }
 
     helper.writeLog(logFile);

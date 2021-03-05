@@ -1,145 +1,349 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
+
+/* GLOBAL */
+/* CSS Color Definitions */
+:root {
+    --main-dark-blue: #1D2125;
+    --main-medium-blue: #24292E;
+    --main-light-blue: #2F363D;
+    --accent-blue: #0366D6;
+    --accent-blue-light: #0379FF;
+    --accent-blue-dark: #024FA5;
+    --white: #fff;
+}
+
+*::placeholder {
+    color: grey;
+}
+
 * {
     font-family: 'Lato', sans-serif;
-    color: dimgray;
+    font-size: 1em;
+    color: var(--white);
+}
+
+html {
+    padding: 0;
+    margin: 0;
 }
 
 body {
-    max-width: 500px;
-    background-color: white;
+    max-width: 900px;
+    height: 600px;
+
+    margin: 0;
+
+    background-color: var(--white);
 }
 
-main {
-    display: grid;
-    grid-template-columns: 400px 100%;
-    grid-template-rows: 100vh;
-    grid-template-areas:
-    'logs info';
+button {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: var(--accent-blue);
 }
 
-li {
-    list-style-type: none;
+button:focus {
+    outline: none;
 }
 
-img {
-    width: 20px;
-    display: inline-block;
-    vertical-align: middle;
+button:hover {
+    background-color: var(--accent-blue-light);
+}
+
+button:active {
+    background-color: var(--accent-blue-dark);
 }
 
 textarea {
-    width: 100%;
-    height: 150px;
-    padding: 12px 20px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    background-color: #f8f8f8;
     resize: none;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--main-dark-blue);
+    color: var(--white);   
+    border: 1px solid black;
+}
+
+textarea:focus {
+    outline: none;
+    border: 1px solid var(--accent-blue);
+    border-radius: 5px;
+}
+
+input {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--main-dark-blue);
+    color: var(--white);  
+    border: 1px solid black;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid var(--accent-blue);
+    border-radius: 5px;
+}
+
+svg {
+    width: 30px;
+    height: 30px;
+    stroke: var(--accent-blue);
+}
+
+svg:hover {
+    stroke: var(--accent-blue-light);
+}
+
+svg:active {
+    stroke: var(--accent-blue-dark);
+}
+
+svg.green{
+    stroke: #3CB371;
+}
+
+svg.green:hover {
+    stroke: #53c687;
+}
+
+svg.green:active{
+    stroke: #339961;
+}
+
+svg.red{
+    stroke: #ff6347;
+}
+
+svg.red:hover {
+    stroke: #ff7d66;
+}
+
+svg.red:active{
+    stroke: #ff3c1a;
+}
+
+button.red{
+    background-color: #ff6347;
+}
+
+button.red:hover {
+    background-color: #ff7d66;
+}
+
+button.red:active{
+    background-color: #ff3c1a;
+}
+
+.label {
+    font-size: 12px;
+    color: grey;
+}
+
+.highlightRecord{
+    background-color: var(--main-light-blue);
+    border: 1px solid var(--accent-blue) !important;
 }
 
 
 
+/* Main layout styles */
+main {
+
+    max-width: 900px;
+    height: 600px;
+
+    margin: 0;
+
+    display: grid;
+    grid-template-columns: 250px 1fr 1fr 1fr;
+    grid-template-rows: 50px auto 200px;
+    grid-template-areas:
+    'top-bar top-bar top-bar top-bar'
+    'records details details details'
+    'new-record details details details';
+
+    background-color: var(--main-medium-blue);
+}
+
+main > * {
+    outline: solid black 1px;
+    padding: 10px;
+    display: flex;
+}
+
+main > #top-bar {
+    grid-area: top-bar;
+    background-color: var(--main-dark-blue);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+main > #records {
+    grid-area: records;
+    background-color: var(--main-medium-blue);
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    overflow-y: auto;
+}
+
+main > #new-record {
+    grid-area: new-record;
+    background-color: var(--main-light-blue);
+    flex-direction: column;
+}
+
+main > #details {
+    grid-area: details;
+    background-color: var(--main-medium-blue);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 1fr;
+    grid-template-areas:
+    'controls'
+    'info';
+}
 
 
 
-main .logs {
-    grid-area: logs;
+/* Top Bar */
+main > #top-bar > div {
+    display: flex;
+    flex-direction: column;
+}
 
+main > #top-bar > #archve-controls {
+    display: flex;
+    flex-direction: row;
+}
+
+main > #top-bar > #archve-controls > svg {
+    margin-right: 5px;
+}
+
+main > #top-bar > div > p {
+    margin: 0px;
+}
+
+
+/* Records */
+main > #records .record {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid black;
+    padding: 5px 10px;
+    justify-content: space-between;
+}
+
+main > #records .record:hover {
+    background-color: var(--main-light-blue);
+    cursor: default;
+}
+
+main > #records .record .summary {
+    overflow: hidden;
+}
+
+main > #records .record .days {
+    margin-left: 10px;
+}
+
+
+
+/* New Record */
+main > #new-record > input {
+    margin-bottom: 7px;
+}
+
+main > #new-record > textarea {
+    height: 100px;
+    margin-bottom: 7px;
+}
+
+
+/* Details */
+main > #details > #controls {
+    grid-area: controls;
+
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    justify-content: flex-end;
+}
+
+main > #details > #controls > svg {
+    margin-left: 10px;
+}
+
+main > #details > #info {
+    grid-area: info;
+    padding: 20px;
+}
+
+main > #details > #info > h1 {
+    text-align: center;
+    margin-bottom: 50px;
+    color: grey;
+    font-size: 1em;
+}
+
+main > #details > #info > div {
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 20px;
+}
+
+main > #details > #info > div > p {
     padding: 0px;
     margin: 0px;
 }
 
-main .logs > div {
-    padding: 0px 10px;
-    margin: 0px;
 
-    height: 100vh;
-    background-color: #dddddd;
-}
 
-main .logs > div .record {
-    display: grid;
-    grid-template-columns: 4 1;
-    grid-template-rows: auto auto;
-    grid-template-areas:
-    'log-info log-actions'
-    'message message';
-    column-gap: 10px;
-    row-gap: 10px;
-    padding: 10px;
-}
-
-main .logs > div .record .log-info {
-    grid-area: log-info;
-}
-
-main .logs > div .record .log-actions {
-    grid-area: log-actions;
-
+/* Flash */
+#flash {
     display: flex;
-    flex-flow: column wrap;
-    align-content: flex-end;
-}
+    transition: opacity 1s ease-out;
+    opacity: 0;
 
-main .logs > div .record .message {
-    grid-area: message;
-    padding: 5px 10px;
-    background-color: #eeeeee;
-}
+    color: white;
+    background-color: var(--accent-blue);
 
+    border: none;
+    border-radius: 5px;
+    
+    padding: 5px 15px;
 
-
-
-main .info {
-    grid-area: info;
-
-    margin-left: 5px;
-}
-
-main .info .fixed-action-btn img {
-    width: 40px;
-}
-
-main .info .fixed-action-btn ul img {
-    width: 20px;
-}
-
-
-
-
-
-/* Custom classes */
-
-.scroll {
-    overflow-y: auto;
-}
-
-
-
-/* Toast */
-/* #toast-container {
+    position: fixed;
     bottom: 20px;
     right: 20px;
-    left: auto;
-} */
 
-#toast-container {
-    bottom: 20px;
-    right: auto;
-    left: 20px;
+    flex-direction: row;
+    align-items: center;
 }
 
-.toast-warning {
-    color: white;
-    background-color: tomato;
+#flash.flash-show {
+    transition: none;
+    opacity: 0.8;
+}
+
+#flash > p {
+    margin: 0px;
+}
+
+#flash > svg {
+    stroke: white;
+    margin-left: 10px;
 }
 
 
 
 /* Overlay */
-#new-archive-overlay {
+#overlay {
     position: fixed; /* Sit on top of the page content */
     display: none; /* Hidden by default */
     width: 100%; /* Full width (cover the whole page) */
@@ -156,63 +360,39 @@ main .info .fixed-action-btn ul img {
     justify-content: center;
 }
 
-#new-archive-overlay > div {
-    width: 500px;
-    height: auto;
-    background-color: white;
-
-    border-radius: 2.5px;
-    padding: 25px;
+#overlay.overlay-show {
+    display: flex !important;
 }
 
-#new-archive-overlay > div > .button {
+#overlay > #container {
+    width: 350px;
+
+    border-radius: 5px;
+
+    padding: 15px;
+    background-color: var(--main-medium-blue);
+
+    display: flex;
+    flex-direction: column;
+}
+
+#overlay > #container > div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+#overlay > #container > div > p {
+    margin: 5px;
+}
+
+#overlay > #container > div#overlay-controls {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 
-#new-archive-overlay > div > .button > input[type=button] {
-    width: 30%;
-    font-size: 1em;
-}
-
-
-/* Overlay */
-#new-record-overlay {
-    position: fixed; /* Sit on top of the page content */
-    display: none; /* Hidden by default */
-    width: 100%; /* Full width (cover the whole page) */
-    height: 100%; /* Full height (cover the whole page) */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-    cursor: pointer; /* Add a pointer on hover */
-
-    align-items: center;
-    justify-content: center;
-}
-
-#new-record-overlay > div {
-    width: 500px;
-    height: auto;
-    background-color: white;
-
-    border-radius: 2.5px;
-    padding: 25px;
-}
-
-#new-record-overlay > div > .button {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-evenly;
-}
-
-#new-record-overlay > div > .button > input[type=button] {
-    width: 30%;
-    font-size: 1em;
+#overlay > #container > div#overlay-controls > button {
+    width: 40%;
 }
