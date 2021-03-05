@@ -41,7 +41,10 @@
       "category": "Utility"
     },
     "win": {
-      "signingHashAlgorithms": ["sha1", "sha256"]
+      "signingHashAlgorithms": [
+        "sha1",
+        "sha256"
+      ]
     }
   }
 }

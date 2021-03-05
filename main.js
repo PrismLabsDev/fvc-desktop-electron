@@ -1,5 +1,6 @@
-const { shell, app, Menu, BrowserWindow, dialog } = require('electron');
+const { shell, app, Menu, BrowserWindow, dialog, ipcMain, ipcRenderer} = require('electron');
 
+const helper = require('./app/helper.js');
 const events = require('./app/events.js');
 const store = require('./app/store.js');
 
@@ -7,15 +8,14 @@ const isMac = process.platform === 'darwin';
 
 function createWindow () {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 900,
+        height: 600 + 22,
         webPreferences: {
         nodeIntegration: true
         }
     });
 
-    win.webContents.openDevTools()
-
+    // win.webContents.openDevTools()
     win.loadFile('./resources/view/index.html');
 }
 
