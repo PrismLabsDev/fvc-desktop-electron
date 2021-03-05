@@ -1,10 +1,19 @@
 const {ipcRenderer, dialog} = require('electron');
 
-const store = {};
+const store = {
+    data: {},
+};
 
 // Event watch
 ipcRenderer.on('refresh', (event, data) => {
     if(!data.logs){
+
+        // reset store
+        store.data.project = null;
+        store.data.author = null;
+        store.data.created_at = null;
+        store.data.directory = null;
+        store.data.logs = {};
 
         store.data.directory = data.directory;
 
@@ -14,6 +23,17 @@ ipcRenderer.on('refresh', (event, data) => {
         $('#created_at').empty();
 
         $("#records").empty();
+
+        // Update view
+        $('#info #id').text("");
+        $('#info #created_at').text("");
+        $('#info #summary').text("");
+        $('#info #description').text("");
+
+        toggleFlash("Archive does not exist in this directory.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
     } else {
         store.data = data;
         refreshData();
@@ -29,22 +49,55 @@ async function setDirectory() {
 
 async function createArchive(){
     await ipcRenderer.send('createArchive', {
-        author: $('#formAuthor').val(),
-        project: $('#formArchive').val()
+        author: $('#overlay #container #archive-author').val(),
+        project: $('#overlay #container #archive-name').val()
     });
+
+    $('#overlay #container #archive-author').val("");
+    $('#overlay #container #archive-name').val("");
+
+    overlayOff();
 }
 
 async function destroyArchive(){
-    let status = await ipcRenderer.send('destroyArchive', {});
+    if (!store.data.directory) {
+        toggleFlash("No directory as been selected.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    } else if(!store.data.project){
+        toggleFlash("Archive does not exists in directory.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    } else {
+        let status = await ipcRenderer.send('destroyArchive', {});
+    }
 }
 
 
 // Record events
 async function createRecord(){
-    await ipcRenderer.send('createRecord', {
-        summary: $('#new-record #summary').val(),
-        description: $('#new-record #description').val()
-    });
+    if (!store.data.directory) {
+        toggleFlash("No directory as been selected.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    } else if(!store.data.project){
+        toggleFlash("Archive does not exists in directory.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    } else {
+        await ipcRenderer.send('createRecord', {
+            summary: $('#new-record #summary').val(),
+            description: $('#new-record #description').val()
+        });
+
+        // Clear input
+        $('#new-record #summary').val("");
+        $('#new-record #description').val("");
+    }
 }
 
 async function restoreRecord(){
@@ -60,10 +113,17 @@ async function restoreRecordFull(){
 }
 
 async function destroyRecord(){
-    console.log('test delete');
     await ipcRenderer.send('destroyRecord', {
         archiveId: String(store.selectedRecordKey)
     });
+
+    store.selectedRecordKey = null;
+
+    // Update view
+    $('#info #id').text("");
+    $('#info #created_at').text("");
+    $('#info #summary').text("");
+    $('#info #description').text("");
 }
 
 
@@ -81,25 +141,57 @@ function daysFrom(data){
     return Math.round((now - data) / 86400000);
 }
 
+function overlayOn() {
+    if (!store.data.directory) {
+        toggleFlash("No directory as been selected.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    } else if(store.data.project){
+        toggleFlash("Archive already exists in directory.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    } else {
+        $(`#overlay`).addClass("overlay-show");
+
+        let archivePath = store.data.directory;
+        let folder = [];
+
+        if(archivePath.includes("\\")){
+            folder = archivePath.split("\\");
+        } else if(archivePath.includes("/")){
+            folder = archivePath.split("/");
+        }
+
+        let defaultArchiveName = folder[folder.length - 1];
+
+        $(`#overlay #container #archive-name`).val(defaultArchiveName);
+    }
+}
+
+function overlayOff() {
+    $(`#overlay`).removeClass("overlay-show");
+}
+
 function toggleFlash(message, style = null){
-    let el = document.getElementById("flash");
-    el.innerHTML = message;
+    let el = $("#flash");
+    $("#flash #message").text(message);
 
-    if(style.color){
-        el.style.color = style.color;
+    if(style != null && style.color){
+        $("#flash").css('color' , style.color);
+        $("#flash svg").css('stroke' , style.color);
     }
 
-    if(style.backgroundColor){
-        el.style.backgroundColor = style.backgroundColor;
+    if(style != null && style.backgroundColor){
+        $("#flash").css('background-color' , style.backgroundColor);
     }
 
-    el.classList.add('flash-show');
+    $(`#flash`).addClass("flash-show");
 
     window.setTimeout(() => {
-        el.classList.remove('flash-show');
+        $(`#flash`).removeClass("flash-show");
     }, 3000);
-
-    console.log('flash: ' + message);
 }
 
 function showRecord(key){

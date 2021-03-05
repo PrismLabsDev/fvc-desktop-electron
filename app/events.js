@@ -14,7 +14,8 @@ const init = require('./lib/init.js');
 // Archive Events
 ipcMain.on('setDirectory', async (event, data) => {
     let dir = await dialog.showOpenDialog({ properties: ['openDirectory'] });
-    store.dir = await dir.filePaths[0];
+    await helper.resetStore();
+    store.dir = await String(dir.filePaths[0]);
     event.sender.send('refresh', helper.readLog());
 });
 
