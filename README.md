@@ -48,8 +48,8 @@ When working with media files such as ``.psd`` or ``.ai`` files it is common tha
 ## How to run FVC
 
 ``` bash
-  npm start           // Created dev application
-  npm run build:all   // Creates builds for all platforms in "dist" dir
+  npm start           # Created dev application
+  npm run build:all   # Creates builds for all platforms in "dist" dir
 ```
 
 ### Created by Jack Woodrow for Jasmin Dyer ❤
