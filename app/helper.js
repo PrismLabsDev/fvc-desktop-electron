@@ -7,8 +7,17 @@ function logFileTemplate(){
         project: null,
         author: null,
         created_at: null,
+        dir: null,
         logs: {}
     }
+}
+
+function resetStore(){
+    store.project = null;
+    store.author = null;
+    store.created_at = null;
+    store.dir = null;
+    store.logs = {};
 }
 
 function currentDir(){
@@ -34,7 +43,6 @@ function dateToReadable(date){
 }
 
 function readLog(){
-
     let archiveExists = fs.existsSync(path.join(currentDir(), '.fvc', 'log.json'));
 
     if(archiveExists){
@@ -110,6 +118,7 @@ function getIgnoreFiles(dirPath = currentDir()){
 
 module.exports = {
     logFileTemplate,
+    resetStore,
     currentDir,
     archiveDir,
     currentDate,
