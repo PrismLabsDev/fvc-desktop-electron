@@ -1,5 +1,6 @@
-const { shell, app, Menu, BrowserWindow, dialog, ipcMain} = require('electron');
+const { shell, app, Menu, BrowserWindow, dialog, ipcMain, ipcRenderer} = require('electron');
 
+const helper = require('./app/helper.js');
 const events = require('./app/events.js');
 const store = require('./app/store.js');
 
@@ -15,8 +16,7 @@ function createWindow () {
     });
 
     // win.webContents.openDevTools()
-
-    win.loadFile('./resources/view/index1.html');
+    win.loadFile('./resources/view/index.html');
 }
 
 const menu = Menu.buildFromTemplate([
@@ -38,16 +38,7 @@ const menu = Menu.buildFromTemplate([
     {
         label: 'File',
         submenu: [
-            isMac ? { role: 'close' } : { role: 'quit' },
-            { type: 'separator' },
-            {
-                label: 'Open', 
-                click: async () => {    
-                    let dir = await dialog.showOpenDialog({ properties: ['openDirectory'] });
-                    store.dir = await dir.filePaths[0];
-                    ipcMain.send('refresh', helper.readLog());
-                }
-            }
+            isMac ? { role: 'close' } : { role: 'quit' }
         ]
     },
 

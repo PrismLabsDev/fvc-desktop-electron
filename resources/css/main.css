@@ -8,6 +8,8 @@
     --main-medium-blue: #24292E;
     --main-light-blue: #2F363D;
     --accent-blue: #0366D6;
+    --accent-blue-light: #0379FF;
+    --accent-blue-dark: #024FA5;
     --white: #fff;
 }
 
@@ -47,11 +49,11 @@ button:focus {
 }
 
 button:hover {
-    background-color: #0379FF;
+    background-color: var(--accent-blue-light);
 }
 
 button:active {
-    background-color: #024FA5;
+    background-color: var(--accent-blue-dark);
 }
 
 textarea {
@@ -81,6 +83,30 @@ input:focus {
     outline: none;
     border: 1px solid var(--accent-blue);
     border-radius: 5px;
+}
+
+svg {
+    width: 30px;
+    height: 30px;
+    stroke: var(--accent-blue);
+}
+
+svg:hover {
+    stroke: var(--accent-blue-light);
+}
+
+svg:active {
+    stroke: var(--accent-blue-dark);
+}
+
+.label {
+    font-size: 12px;
+    color: grey;
+}
+
+.highlightRecord{
+    background-color: var(--main-light-blue);
+    border: 1px solid var(--accent-blue) !important;
 }
 
 
@@ -113,6 +139,10 @@ main > * {
 main > #top-bar {
     grid-area: top-bar;
     background-color: var(--main-dark-blue);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
 }
 
 main > #records {
@@ -133,12 +163,26 @@ main > #new-record {
 main > #details {
     grid-area: details;
     background-color: var(--main-medium-blue);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 1fr;
+    grid-template-areas:
+    'controls'
+    'info';
 }
 
 
 
 /* Top Bar */
+main > #top-bar > div {
+    display: flex;
+    flex-direction: column;
+}
 
+main > #top-bar > div > p {
+    margin: 0px;
+}
 
 
 /* Records */
@@ -148,6 +192,19 @@ main > #records .record {
     border-bottom: 1px solid black;
     padding: 5px 10px;
     justify-content: space-between;
+}
+
+main > #records .record:hover {
+    background-color: var(--main-light-blue);
+    cursor: default;
+}
+
+main > #records .record .summary {
+    overflow: hidden;
+}
+
+main > #records .record .days {
+    margin-left: 10px;
 }
 
 
@@ -164,3 +221,15 @@ main > #new-record > textarea {
 
 
 /* Details */
+main > #details > #controls {
+    grid-area: controls;
+
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    justify-content: flex-end;
+}
+
+main > #details > #info {
+    grid-area: info;
+}
