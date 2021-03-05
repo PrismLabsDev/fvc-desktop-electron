@@ -5,36 +5,51 @@ const store = require('./store.js');
 const helper = require('./helper.js');
 
 // Command Files
-const saveCMD = require('./lib/save.js');
-const restoreCMD = require('./lib/restore.js');
-const destroyCMD = require('./lib/destroy.js');
+const save = require('./lib/save.js');
+const restore = require('./lib/restore.js');
+const destroy = require('./lib/destroy.js');
+const init = require('./lib/init.js');
 
 
-// Events
-
+// Archive Events
 ipcMain.on('setDirectory', async (event, data) => {
     let dir = await dialog.showOpenDialog({ properties: ['openDirectory'] });
-    store.dir = dir.filePaths[0];
-    event.returnValue = dir.filePaths[0];
+    await helper.resetStore();
+    store.dir = await String(dir.filePaths[0]);
     event.sender.send('refresh', helper.readLog());
 });
 
-ipcMain.on('restore', async (event, data) => {
-    await restoreCMD.restore(data.archiveId);
+ipcMain.on('createArchive', async (event, data) => {
+    await init(data.project, data.author);
     event.sender.send('refresh', helper.readLog());
 });
 
-ipcMain.on('restoreFull', async (event, data) => {
-    await restoreCMD.full(data.archiveId);
+ipcMain.on('destroyArchive', async (event, data) => {
+    let status = await destroy.archive();
+    event.returnValue = status;
+    if(status){
+        event.sender.send('refresh', helper.readLog());
+    }
+});
+
+
+// Record Events
+ipcMain.on('createRecord', async (event, data) => {
+    await save(data);
     event.sender.send('refresh', helper.readLog());
 });
 
-ipcMain.on('destroy', async (event, data) => {
-    await destroyCMD.record(data.archiveId);
+ipcMain.on('restoreRecord', async (event, data) => {
+    await restore.restore(data.archiveId);
     event.sender.send('refresh', helper.readLog());
 });
 
-ipcMain.on('newArchive', async (event, data) => {
-    await saveCMD(data.message);
+ipcMain.on('restoreRecordFull', async (event, data) => {
+    await restore.full(data.archiveId);
+    event.sender.send('refresh', helper.readLog());
+});
+
+ipcMain.on('destroyRecord', async (event, data) => {
+    await destroy.record(data.archiveId);
     event.sender.send('refresh', helper.readLog());
 });

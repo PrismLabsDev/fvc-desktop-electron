@@ -4,7 +4,12 @@ const helper = require('../helper');
 const store = require('../store.js');
 
 function archive(){
-    fs.rmdirSync(helper.archiveDir(), {recursive: true});
+    if (fs.existsSync(helper.archiveDir())){
+        fs.rmdirSync(helper.archiveDir(), {recursive: true});
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function record(archive_id){
