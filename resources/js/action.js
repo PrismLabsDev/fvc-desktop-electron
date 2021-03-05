@@ -81,6 +81,27 @@ function daysFrom(data){
     return Math.round((now - data) / 86400000);
 }
 
+function toggleFlash(message, style = null){
+    let el = document.getElementById("flash");
+    el.innerHTML = message;
+
+    if(style.color){
+        el.style.color = style.color;
+    }
+
+    if(style.backgroundColor){
+        el.style.backgroundColor = style.backgroundColor;
+    }
+
+    el.classList.add('flash-show');
+
+    window.setTimeout(() => {
+        el.classList.remove('flash-show');
+    }, 3000);
+
+    console.log('flash: ' + message);
+}
+
 function showRecord(key){
 
     // remove old highlight record
@@ -103,7 +124,6 @@ function showRecord(key){
     } else {
         $('#info #description').text(record.description);
     }
-
 }
 
 function refreshData(){

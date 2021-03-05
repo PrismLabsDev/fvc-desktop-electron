@@ -109,6 +109,50 @@ svg:active {
     border: 1px solid var(--accent-blue) !important;
 }
 
+#flash {
+    display: block;
+    transition: opacity 1s ease-out;
+    opacity: 0;
+
+    color: white;
+    background-color: var(--accent-blue);
+
+    border: none;
+    border-radius: 5px;
+    
+    padding: 15px;
+
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+#flash.flash-show {
+    transition: none;
+    opacity: 0.8;
+}
+
+#overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+
+    align-items: center;
+    justify-content: center;
+}
+
+#overlay.overlay-show {
+    display: block !important;
+}
+
 
 
 /* Main layout styles */
