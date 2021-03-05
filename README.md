@@ -45,4 +45,11 @@ When working with media files such as ``.psd`` or ``.ai`` files it is common tha
 * FVC Ignore
   * You can creat a ``.fvcignore`` file in the root of the project and specify any files you wish to exclude from the archive.
 
+## How to run FVC
+
+``` bash
+  npm start           // Created dev application
+  npm run build:all   // Creates builds for all platforms in "dist" dir
+```
+
 ### Created by Jack Woodrow for Jasmin Dyer ❤
