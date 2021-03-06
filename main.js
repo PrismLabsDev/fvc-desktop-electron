@@ -1,4 +1,4 @@
-const { shell, app, Menu, BrowserWindow, dialog, ipcMain, ipcRenderer} = require('electron');
+const { shell, app, Menu, BrowserWindow} = require('electron');
 
 const helper = require('./app/helper.js');
 const events = require('./app/events.js');
@@ -7,11 +7,12 @@ const store = require('./app/store.js');
 const isMac = process.platform === 'darwin';
 
 function createWindow () {
+
     const win = new BrowserWindow({
         width: 900,
-        height: 600 + 22,
+        height: 600,
         webPreferences: {
-        nodeIntegration: true
+            nodeIntegration: true
         }
     });
 
