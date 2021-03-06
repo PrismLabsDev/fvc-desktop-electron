@@ -29,11 +29,8 @@ html {
 }
 
 body {
-    max-width: 900px;
-    height: 600px;
-
     margin: 0;
-
+    padding: 0;
     background-color: var(--white);
 }
 
@@ -150,8 +147,8 @@ button.red:active{
 /* Main layout styles */
 main {
 
-    max-width: 900px;
-    height: 600px;
+    width: 100vw;
+    height: 100vh;
 
     margin: 0;
 
@@ -221,7 +218,7 @@ main > #top-bar > #archve-controls {
     flex-direction: row;
 }
 
-main > #top-bar > #archve-controls > svg {
+main > #top-bar > #archve-controls > div {
     margin-right: 5px;
 }
 
@@ -271,7 +268,7 @@ main > #details > #controls {
 
     display: flex;
     flex-direction: row;
-    height: auto;
+    height: 30px;
     justify-content: flex-end;
 }
 
@@ -395,4 +392,55 @@ main > #details > #info > div > p {
 
 #overlay > #container > div#overlay-controls > button {
     width: 40%;
+}
+
+
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+    display: block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    margin-left: -60px;
+    padding: 5px;
+    top: 110%;
+
+    background-color: var(--main-dark-blue);
+    color: grey;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    width: 100px;
+}
+
+.tooltip .tooltiptext.right{
+    left: calc(100% + 30px);
+}
+
+.tooltip .tooltiptext.left{
+    left: calc(0% - 30px);
+}
+
+/* .tooltip .tooltiptext::after {
+    content: "";
+    position: relative;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+    transform: rotate(180deg);
+} */
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }
