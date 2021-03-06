@@ -14,9 +14,11 @@ const init = require('./lib/init.js');
 // Archive Events
 ipcMain.on('setDirectory', async (event, data) => {
     let dir = await dialog.showOpenDialog({ properties: ['openDirectory'] });
-    await helper.resetStore();
-    store.dir = await String(dir.filePaths[0]);
-    event.sender.send('refresh', helper.readLog());
+    if(!dir.canceled){
+        await helper.resetStore();
+        store.dir = await String(dir.filePaths[0]);
+        event.sender.send('refresh', helper.readLog());
+    }
 });
 
 ipcMain.on('createArchive', async (event, data) => {
