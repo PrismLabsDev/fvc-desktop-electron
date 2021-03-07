@@ -5,5 +5,6 @@ module.exports = {
         created_at: null,
         dir: null,
     },
-    logs: {}
+    logs: {},
+    workingDir: []
 };

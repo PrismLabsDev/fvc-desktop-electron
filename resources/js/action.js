@@ -7,8 +7,41 @@ let store = {
         created_at: null,
         dir: null,
     },
-    logs: {}
+    logs: {},
+    workingDir: []
 };
+
+//Refresh current dir
+setInterval(() => { 
+    ipcRenderer.send('readFiles');
+}, 500);
+
+ipcRenderer.on('readFilesRes', (event, data) => {
+    let curentNode = $("#workingDirContainer").text('');
+    ifDir(data, curentNode);
+});
+
+ipcRenderer.on('readArchiveFilesRes', (event, data) => {
+    let curentNode = $("#archiveDirContainer").text('');
+    ifDir(data, curentNode);
+});
+
+function ifDir(items, lastNode){
+
+    Object.keys(items).forEach((itemKey) => {
+
+        item = items[itemKey];
+
+        if (typeof item == "object"){
+            let folderElTemplate = `<div class="margin-left"><div>${itemKey}</div></div>`;
+            let folderEl = $(folderElTemplate).appendTo(lastNode);
+            ifDir(item, folderEl)
+        } else {
+            let fileTemplate=`<div class="margin-left">${itemKey}</div>`;
+            $(fileTemplate).appendTo(lastNode);
+        }
+    });
+}
 
 // Event watch
 ipcRenderer.on('refresh', (event, data) => {
@@ -83,9 +116,6 @@ async function destroyArchive(){
 
 // Record events
 async function createRecord(){
-
-    console.log(store);
-
     if (!store.data.dir) {
         toggleFlash("No directory as been selected.", {
             color: "white",
@@ -245,6 +275,8 @@ function showRecord(key){
     } else {
         $('#info #description').text(record.description);
     }
+
+    ipcRenderer.send('readArchiveFiles', {record: key});
 }
 
 function refreshData(){

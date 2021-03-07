@@ -142,6 +142,9 @@ button.red:active{
     border: 1px solid var(--accent-blue) !important;
 }
 
+.margin-left {
+    margin-left: 20px;
+}
 
 
 /* Main layout styles */
@@ -153,12 +156,12 @@ main {
     margin: 0;
 
     display: grid;
-    grid-template-columns: 250px 1fr 1fr 1fr;
+    grid-template-columns: 250px 250px 1fr 1fr 1fr;
     grid-template-rows: 50px auto 200px;
     grid-template-areas:
-    'top-bar top-bar top-bar top-bar'
-    'records details details details'
-    'new-record details details details';
+    'top-bar top-bar top-bar top-bar top-bar'
+    'records dir details details details'
+    'new-record dir details details details';
 
     background-color: var(--main-medium-blue);
 }
@@ -185,6 +188,22 @@ main > #records {
     flex-direction: column;
     padding: 0px;
     overflow-y: auto;
+}
+
+main > #dir {
+    grid-area: dir;
+    background-color: var(--main-medium-blue);
+    display: flex;
+    flex-direction: column;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50% 50%;
+    grid-template-areas:
+    'dir-working'
+    'dir-archive';
+
+    color: grey;
 }
 
 main > #new-record {
@@ -247,6 +266,75 @@ main > #records .record .summary {
 
 main > #records .record .days {
     margin-left: 10px;
+}
+
+
+
+/* Workdir */
+main > #dir > #workingDir {
+    grid-area: dir-working;
+
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+main > #dir > #workingDir > p {
+    text-align: center;
+    color: grey;
+    font-size: 12px;
+    margin: 0px;
+    margin-bottom: 5px;
+    padding: 0px;
+}
+
+main > #dir > #workingDir > #workingDirContainer {
+    background-color: var(--main-dark-blue);
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+    overflow-y: auto;
+    border-radius: 5px;
+    height: 100%;
+}
+
+main > #dir > #workingDir > #workingDirContainer > div {
+    margin-left: 0px i !important;
+}
+
+
+
+/* Archivedir */
+main > #dir > #archiveDir {
+    grid-area: dir-archive;
+
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+main > #dir > #archiveDir > p {
+    text-align: center;
+    color: grey;
+    font-size: 12px;
+    margin: 0px;
+    margin-bottom: 5px;
+    padding: 0px;
+}
+
+main > #dir > #archiveDir > #archiveDirContainer {
+    grid-area: dir-archive;
+    background-color: var(--main-dark-blue);
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+    overflow-y: auto;
+    border-radius: 5px;
+    height: 100%;
+}
+
+main > #dir > #archiveDir > #archiveDirContainer > div {
+    margin-left: 0px i !important;
 }
 
 

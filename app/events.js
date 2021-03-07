@@ -3,6 +3,7 @@ const { ipcMain, dialog } = require('electron');
 // Global Helper files
 const store = require('./store.js');
 const helper = require('./helper.js');
+const path = require('path');
 
 // Command Files
 const save = require('./lib/save.js');
@@ -31,6 +32,20 @@ ipcMain.on('destroyArchive', async (event, data) => {
     event.returnValue = status;
     if(status){
         event.sender.send('refresh', helper.readLog());
+    }
+});
+
+ipcMain.on('readFiles', async (event, data) => {
+    if (store.data.dir){
+        let files = await helper.getAllNonIgnoredFilesAsObject();
+        event.sender.send('readFilesRes', files);
+    }
+});
+
+ipcMain.on('readArchiveFiles', async (event, data) => {
+    if (data.record){
+        let files = await helper.getAllNonIgnoredFilesAsObject(path.join(helper.currentDir(), '.fvc', String(data.record)));
+        event.sender.send('readArchiveFilesRes', files);
     }
 });
 
