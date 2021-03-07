@@ -110,7 +110,7 @@ const menu = Menu.buildFromTemplate([
             {
                 label: 'Learn More',
                 click: async () => {
-                    await shell.openExternal('https://github.com/jwoodrow99/fvc-gui')
+                    await shell.openExternal('https://blueorbitmedia.com/fvc/')
                 }
             }
         ]

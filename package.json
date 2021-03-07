@@ -1,6 +1,6 @@
 {
   "name": "fvc",
-  "version": "1.3.0",
+  "version": "2.0.2",
   "description": "Main FVC user application repo",
   "main": "main.js",
   "scripts": {

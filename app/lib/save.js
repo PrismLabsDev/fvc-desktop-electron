@@ -1,7 +1,6 @@
 const fs = require("fs-extra");
 const path = require('path');
 const helper = require('../helper');
-const store = require('../store.js');
 
 module.exports =  (data) => {
 
@@ -10,7 +9,6 @@ module.exports =  (data) => {
 
     let logFile = helper.readLog();
     let createDate = helper.currentDate();
-    let readableCreateDate = helper.dateToReadable(createDate);
 
     // remove prefix of files cleard for archiving
     let removingFilesRaw = helper.getAllNonIgnoredFiles();
