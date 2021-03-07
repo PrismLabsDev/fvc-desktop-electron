@@ -53,7 +53,11 @@ function readLog(){
         logFile.data.dir = currentDir();
         return logFile;
     } else {
-        return {directory: currentDir()};
+        return {
+            data:{ 
+                dir: currentDir()
+            }
+        };
     }
 }
 

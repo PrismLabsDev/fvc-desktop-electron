@@ -12,16 +12,17 @@ let store = {
 
 // Event watch
 ipcRenderer.on('refresh', (event, data) => {
-    if(!data.logs){
+
+    if(!data.data.project){
 
         // reset store
         store.data.project = null;
         store.data.author = null;
         store.data.created_at = null;
-        store.data.dir = data.dir;
+        store.data.dir = data.data.dir;
         store.logs = {};
 
-        $('#directory').text(data.dir);
+        $('#directory').text(data.data.dir);
         $('#project').empty();
         $('#author').empty();
         $('#created_at').empty();
@@ -108,29 +109,50 @@ async function createRecord(){
 }
 
 async function restoreRecord(){
-    await ipcRenderer.send('restoreRecord', {
-        archiveId: String(store.data.selectedRecordKey)
-    });
+    if(store.data.selectedRecordKey){
+        await ipcRenderer.send('restoreRecord', {
+            archiveId: String(store.data.selectedRecordKey)
+        });
+    } else {
+        toggleFlash("Archive record has not been selected.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    }
 }
 
 async function restoreRecordFull(){
-    await ipcRenderer.send('restoreRecordFull', {
-        archiveId: String(store.data.selectedRecordKey)
-    });
+    if(store.data.selectedRecordKey){
+        await ipcRenderer.send('restoreRecordFull', {
+            archiveId: String(store.data.selectedRecordKey)
+        });
+    } else {
+        toggleFlash("Archive record has not been selected.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    }
 }
 
 async function destroyRecord(){
-    await ipcRenderer.send('destroyRecord', {
-        archiveId: String(store.data.selectedRecordKey)
-    });
+    if(store.data.selectedRecordKey){
+        await ipcRenderer.send('destroyRecord', {
+            archiveId: String(store.data.selectedRecordKey)
+        });
 
-    store.data.selectedRecordKey = null;
+        store.data.selectedRecordKey = null;
 
-    // Update view
-    $('#info #id').text("");
-    $('#info #created_at').text("");
-    $('#info #summary').text("");
-    $('#info #description').text("");
+        // Update view
+        $('#info #id').text("");
+        $('#info #created_at').text("");
+        $('#info #summary').text("");
+        $('#info #description').text("");
+    } else {
+        toggleFlash("Archive record has not been selected.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    }
 }
 
 
