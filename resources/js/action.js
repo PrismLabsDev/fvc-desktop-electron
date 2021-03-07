@@ -1,7 +1,13 @@
 const {ipcRenderer, dialog} = require('electron');
 
-const store = {
-    data: {},
+let store = {
+    data: {
+        project: null,
+        author: null,
+        created_at: null,
+        dir: null,
+    },
+    logs: {}
 };
 
 // Event watch
@@ -12,12 +18,10 @@ ipcRenderer.on('refresh', (event, data) => {
         store.data.project = null;
         store.data.author = null;
         store.data.created_at = null;
-        store.data.directory = null;
-        store.data.logs = {};
+        store.data.dir = data.dir;
+        store.logs = {};
 
-        store.data.directory = data.directory;
-
-        $('#directory').text(data.directory);
+        $('#directory').text(data.dir);
         $('#project').empty();
         $('#author').empty();
         $('#created_at').empty();
@@ -35,7 +39,7 @@ ipcRenderer.on('refresh', (event, data) => {
             backgroundColor: "tomato"
         });
     } else {
-        store.data = data;
+        store = data;
         refreshData();
     }
 });
@@ -44,7 +48,7 @@ ipcRenderer.on('refresh', (event, data) => {
 
 // Archive events
 async function setDirectory() {
-    let dir = await ipcRenderer.send('setDirectory');
+    await ipcRenderer.send('setDirectory');
 }
 
 async function createArchive(){
@@ -60,7 +64,7 @@ async function createArchive(){
 }
 
 async function destroyArchive(){
-    if (!store.data.directory) {
+    if (!store.data.dir) {
         toggleFlash("No directory as been selected.", {
             color: "white",
             backgroundColor: "tomato"
@@ -78,7 +82,10 @@ async function destroyArchive(){
 
 // Record events
 async function createRecord(){
-    if (!store.data.directory) {
+
+    console.log(store);
+
+    if (!store.data.dir) {
         toggleFlash("No directory as been selected.", {
             color: "white",
             backgroundColor: "tomato"
@@ -102,22 +109,22 @@ async function createRecord(){
 
 async function restoreRecord(){
     await ipcRenderer.send('restoreRecord', {
-        archiveId: String(store.selectedRecordKey)
+        archiveId: String(store.data.selectedRecordKey)
     });
 }
 
 async function restoreRecordFull(){
     await ipcRenderer.send('restoreRecordFull', {
-        archiveId: String(store.selectedRecordKey)
+        archiveId: String(store.data.selectedRecordKey)
     });
 }
 
 async function destroyRecord(){
     await ipcRenderer.send('destroyRecord', {
-        archiveId: String(store.selectedRecordKey)
+        archiveId: String(store.data.selectedRecordKey)
     });
 
-    store.selectedRecordKey = null;
+    store.data.selectedRecordKey = null;
 
     // Update view
     $('#info #id').text("");
@@ -142,7 +149,7 @@ function daysFrom(data){
 }
 
 function overlayOn() {
-    if (!store.data.directory) {
+    if (!store.data.dir) {
         toggleFlash("No directory as been selected.", {
             color: "white",
             backgroundColor: "tomato"
@@ -155,7 +162,7 @@ function overlayOn() {
     } else {
         $(`#overlay`).addClass("overlay-show");
 
-        let archivePath = store.data.directory;
+        let archivePath = store.data.dir;
         let folder = [];
 
         if(archivePath.includes("\\")){
@@ -197,11 +204,11 @@ function toggleFlash(message, style = null){
 function showRecord(key){
 
     // remove old highlight record
-    $(`#records #${store.selectedRecordKey}`).removeClass("highlightRecord");
+    $(`#records #${store.data.selectedRecordKey}`).removeClass("highlightRecord");
 
     // Log key in store
-    store.selectedRecordKey = key;
-    let record = store.data.logs[key];
+    store.data.selectedRecordKey = key;
+    let record = store.logs[key];
 
     // highlight new record 
     $(`#records #${key}`).addClass("highlightRecord");
@@ -220,14 +227,14 @@ function showRecord(key){
 
 function refreshData(){
 
-    let logs = store.data.logs;
+    let logs = store.logs;
 
-    $('#directory').text(store.data.directory);
+    $('#directory').text(store.data.dir);
     $('#project').text(store.data.project);
     $('#author').text(store.data.author);
     $('#created_at').text(dateToReadable(store.data.created_at));
 
-    keys = Object.keys(store.data.logs).sort((a, b) => {
+    keys = Object.keys(store.logs).sort((a, b) => {
         return b-a;
     });
 

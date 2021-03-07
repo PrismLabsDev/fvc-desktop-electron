@@ -4,24 +4,26 @@ const store = require('./store.js');
 
 function logFileTemplate(){
     return {
-        project: null,
-        author: null,
-        created_at: null,
-        dir: null,
+        data: {
+            project: null,
+            author: null,
+            created_at: null,
+            dir: null,
+        },
         logs: {}
     }
 }
 
 function resetStore(){
-    store.project = null;
-    store.author = null;
-    store.created_at = null;
-    store.dir = null;
+    store.data.project = null;
+    store.data.author = null;
+    store.data.created_at = null;
+    store.data.dir = null;
     store.logs = {};
 }
 
 function currentDir(){
-    return store.dir;
+    return store.data.dir;
 }
 
 function archiveDir(){
@@ -48,7 +50,7 @@ function readLog(){
     if(archiveExists){
         let logFileRaw = fs.readFileSync(path.join(currentDir(), '.fvc', 'log.json'));
         let logFile = JSON.parse(logFileRaw);
-        logFile.directory = currentDir();
+        logFile.data.dir = currentDir();
         return logFile;
     } else {
         return {directory: currentDir()};

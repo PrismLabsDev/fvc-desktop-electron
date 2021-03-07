@@ -16,7 +16,7 @@ ipcMain.on('setDirectory', async (event, data) => {
     let dir = await dialog.showOpenDialog({ properties: ['openDirectory'] });
     if(!dir.canceled){
         await helper.resetStore();
-        store.dir = await String(dir.filePaths[0]);
+        store.data.dir = await String(dir.filePaths[0]);
         event.sender.send('refresh', helper.readLog());
     }
 });

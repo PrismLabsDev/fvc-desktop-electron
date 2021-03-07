@@ -1,7 +1,6 @@
 const fs = require("fs-extra");
 const path = require('path');
 const helper = require('../helper');
-const store = require('../store.js');
 
 function archive(){
     if (fs.existsSync(helper.archiveDir())){
@@ -14,7 +13,6 @@ function archive(){
 
 function record(archive_id){
     let logFile = helper.readLog();
-    let record = logFile.logs[archive_id];
 
     delete logFile.logs[archive_id];
     helper.writeLog(logFile);
