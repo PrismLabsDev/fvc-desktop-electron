@@ -198,7 +198,7 @@ main > #dir {
 
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: 1fr 1fr;
     grid-template-areas:
     'dir-working'
     'dir-archive';
@@ -270,13 +270,19 @@ main > #records .record .days {
 
 
 
+main > #dir .dirItem svg {
+    vertical-align: middle;
+    padding-left: 5px;
+    width: 12px;
+}
+
 /* Workdir */
 main > #dir > #workingDir {
     grid-area: dir-working;
-
     display: flex;
     flex-direction: column;
-    margin: 5px;
+    height: calc(50vh - 50px);
+    overflow: scroll;
 }
 
 main > #dir > #workingDir > p {
@@ -284,8 +290,7 @@ main > #dir > #workingDir > p {
     color: grey;
     font-size: 12px;
     margin: 0px;
-    margin-bottom: 5px;
-    padding: 0px;
+    padding: 3px;
 }
 
 main > #dir > #workingDir > #workingDirContainer {
@@ -293,13 +298,14 @@ main > #dir > #workingDir > #workingDirContainer {
     display: flex;
     flex-direction: column;
     padding: 5px 10px;
-    overflow-y: auto;
     border-radius: 5px;
     height: 100%;
+    width: 100%;
+    overflow: scroll;
 }
 
 main > #dir > #workingDir > #workingDirContainer > div {
-    margin-left: 0px i !important;
+    margin-left: 0px !important;
 }
 
 
@@ -307,10 +313,10 @@ main > #dir > #workingDir > #workingDirContainer > div {
 /* Archivedir */
 main > #dir > #archiveDir {
     grid-area: dir-archive;
-
     display: flex;
     flex-direction: column;
-    margin: 5px;
+    height: calc(50vh - 50px);
+    overflow: scroll;
 }
 
 main > #dir > #archiveDir > p {
@@ -318,23 +324,21 @@ main > #dir > #archiveDir > p {
     color: grey;
     font-size: 12px;
     margin: 0px;
-    margin-bottom: 5px;
-    padding: 0px;
+    padding: 3px;
 }
 
 main > #dir > #archiveDir > #archiveDirContainer {
-    grid-area: dir-archive;
     background-color: var(--main-dark-blue);
     display: flex;
     flex-direction: column;
     padding: 5px 10px;
-    overflow-y: auto;
     border-radius: 5px;
     height: 100%;
+    overflow: scroll;
 }
 
 main > #dir > #archiveDir > #archiveDirContainer > div {
-    margin-left: 0px i !important;
+    margin-left: 0px !important;
 }
 
 
