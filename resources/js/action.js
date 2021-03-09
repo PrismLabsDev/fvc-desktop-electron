@@ -33,7 +33,7 @@ function ifDir(items, lastNode){
         item = items[itemKey];
 
         if (typeof item == "object"){
-            let folderElTemplate = `<div class="margin-left"><div>${itemKey}</div></div>`;
+            let folderElTemplate = `<div class="margin-left dirItem"><div>${itemKey}<svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div></div>`;
             let folderEl = $(folderElTemplate).appendTo(lastNode);
             ifDir(item, folderEl)
         } else {
