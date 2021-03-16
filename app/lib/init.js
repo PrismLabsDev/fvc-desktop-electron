@@ -1,6 +1,5 @@
 const fs = require("fs-extra");
 const helper = require('../helper');
-const store = require('../store.js');
 
 module.exports = (project, author) => {
 
@@ -8,9 +7,9 @@ module.exports = (project, author) => {
     let createDate = helper.currentDate();
 
     // Save inputs to log file
-    logFileInit.project = project;
-    logFileInit.author = author;
-    logFileInit.created_at = createDate;
+    logFileInit.data.project = project;
+    logFileInit.data.author = author;
+    logFileInit.data.created_at = createDate;
 
     if (!fs.existsSync(helper.archiveDir())){
         fs.mkdirSync(helper.archiveDir());

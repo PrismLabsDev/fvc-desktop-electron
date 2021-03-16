@@ -1,4 +1,4 @@
-const { shell, app, Menu, BrowserWindow} = require('electron');
+const { shell, app, Menu, BrowserWindow, ipcMain, dialog} = require('electron');
 
 const helper = require('./app/helper.js');
 const events = require('./app/events.js');
@@ -6,9 +6,11 @@ const store = require('./app/store.js');
 
 const isMac = process.platform === 'darwin';
 
+let window = null;
+
 function createWindow () {
 
-    const win = new BrowserWindow({
+    window = new BrowserWindow({
         width: 900,
         height: 600,
         webPreferences: {
@@ -16,9 +18,21 @@ function createWindow () {
         }
     });
 
-    // win.webContents.openDevTools()
-    win.loadFile('./resources/view/index.html');
+    // window.webContents.openDevTools()
+    window.loadFile('./resources/view/index.html');
 }
+
+ipcMain.on('setWindow', async (event, data) => {
+
+    data.x ? true : data.x = 900;
+    data.y ? true : data.y = 600;
+
+    window.setSize(data.x, data.y);
+});
+
+ipcMain.on('toggleDir', async (event, data) => {
+    window.setSize(250, 600);
+});
 
 const menu = Menu.buildFromTemplate([
     ...(isMac ? [{
@@ -39,7 +53,19 @@ const menu = Menu.buildFromTemplate([
     {
         label: 'File',
         submenu: [
-            isMac ? { role: 'close' } : { role: 'quit' }
+            isMac ? { role: 'close' } : { role: 'quit' },
+            { type: 'separator' },
+            {
+                label: 'Open',
+                click: async() => {
+                    let dir = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+                    if(!dir.canceled){
+                        await helper.resetStore();
+                        store.data.dir = await String(dir.filePaths[0]);
+                        window.webContents.send('refresh', helper.readLog());
+                    }
+                }
+            }
         ]
     },
 
@@ -84,7 +110,26 @@ const menu = Menu.buildFromTemplate([
             { role: 'zoomIn' },
             { role: 'zoomOut' },
             { type: 'separator' },
-            { role: 'togglefullscreen' }
+            { role: 'togglefullscreen' },
+            { type: 'separator' },
+            { 
+                label: 'Regular View', 
+                click: async () => {
+                    window.setSize(900, 600);
+                }
+            },
+            { 
+                label: 'Medium View', 
+                click: async () => {
+                    window.setSize(500, 600);
+                }
+            },
+            { 
+                label: 'Small View', 
+                click: async () => {
+                    window.setSize(250, 600);
+                }
+            }
         ]
     },
 
@@ -110,7 +155,7 @@ const menu = Menu.buildFromTemplate([
             {
                 label: 'Learn More',
                 click: async () => {
-                    await shell.openExternal('https://github.com/jwoodrow99/fvc-gui')
+                    await shell.openExternal('https://blueorbitmedia.com/fvc/')
                 }
             }
         ]
