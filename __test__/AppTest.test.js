@@ -10,9 +10,9 @@ beforeAll(() => {
         args: [path.join(__dirname, "../")]
     });
     return app.start();
-});
+}, 15000);
 
-afterAll(() => {
+afterAll(function () {
     if (app && app.isRunning()) {
         return app.stop();
     }
@@ -20,13 +20,11 @@ afterAll(() => {
 
 test("Displays App window", async () => {
     let windowCount = await app.client.getWindowCount();
-    console.log(windowCount);
     expect(windowCount).toBe(1);
 });
 
 test("Header displays appropriate text", async () => {
     const headerElement = await app.client.$("h1");
     let headerText = await headerElement.getText();
-    console.log(headerText);
     expect(headerText).toBe("Archive Record Information");
 });
