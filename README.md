@@ -1,6 +1,29 @@
-# FVC
 
-[![jwoodrow99](https://circleci.com/gh/jwoodrow99/fvc/tree/main.svg?style=svg)](https://app.circleci.com/pipelines/github/jwoodrow99/fvc)
+<div align="center">
+  <img width="250px" alt="FVC Logo" src="https://raw.githubusercontent.com/jwoodrow99/fvc/main/build/icon.png"/>
+</div>
+
+<br/>
+
+<div align="center">
+  <img alt="Last Commit" src="https://img.shields.io/github/last-commit/jwoodrow99/fvc/develop?style=for-the-badge">
+  <img alt="Current Release" src="https://img.shields.io/github/v/release/jwoodrow99/fvc?style=for-the-badge">
+  <img alt="Current Tag" src="https://img.shields.io/github/v/tag/jwoodrow99/fvc?style=for-the-badge">
+</div>
+
+<br/>
+
+<div align="center">
+  <a href="https://circleci.com/gh/jwoodrow99/fvc"><img src="https://circleci.com/gh/jwoodrow99/fvc.svg?style=svg"></a>
+</div>
+
+<br/>
+<hr/>
+<br/>
+
+<a align="middle" href="https://blueorbitmedia.com/fvc/"><img width="50" src="https://blueorbitmedia.com/wp-content/uploads/2021/01/logo_plain-2048x1055.png"/></a> More info at [Blue Orbit Media](https://blueorbitmedia.com/fvc/)
+
+
 
 **This is the latest version of the FVC (File Version Control) tool. This version of FVC focuses on the GUI interface.**
 
