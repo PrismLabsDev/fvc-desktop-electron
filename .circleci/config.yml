@@ -4,4 +4,5 @@ orbs:
 workflows:
   node-tests:
     jobs:
-      - node/test
+      - node/test:
+          version: 14.16.0
