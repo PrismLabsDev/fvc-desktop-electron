@@ -3,6 +3,7 @@ const { shell, app, Menu, BrowserWindow, ipcMain, dialog} = require('electron');
 const helper = require('./app/helper.js');
 const events = require('./app/events.js');
 const store = require('./app/store.js');
+const path = require('path');
 
 const isMac = process.platform === 'darwin';
 
@@ -14,7 +15,11 @@ function createWindow () {
         width: 900,
         height: 600,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: false,
+            contextIsolation: true,
+            enableRemoteModule: false,
+            webSecurity: true,
+            preload: path.join(__dirname, "preload.js") // use a preload script
         }
     });
 
