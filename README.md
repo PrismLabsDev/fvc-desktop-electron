@@ -1,5 +1,7 @@
 # FVC
 
+[![jwoodrow99](https://circleci.com/gh/jwoodrow99/fvc/tree/main.svg?style=svg)](https://app.circleci.com/pipelines/github/jwoodrow99/fvc)
+
 **This is the latest version of the FVC (File Version Control) tool. This version of FVC focuses on the GUI interface.**
 
 File Version Control (FVC) is a tool designed to give automated version control abilities (similar to Git) to those working with binary and media files, where traditional version control is not possible. This package is designed to increase productivity and organization, not to reduce the size of archived files similar to git.
@@ -49,7 +51,7 @@ When working with media files such as ``.psd`` or ``.ai`` files it is common tha
 
 ``` bash
   npm start           # Created dev application
-  npm run build:all   # Creates builds for all platforms in "dist" dir
+  npm run build       # Creates builds for all platforms in "dist" dir
 ```
 
 ### Created by Jack Woodrow for Jasmin Dyer ❤

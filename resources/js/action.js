@@ -1,4 +1,3 @@
-const {ipcRenderer, dialog} = require('electron');
 
 let store = {
     data: {
@@ -13,15 +12,15 @@ let store = {
 
 //Refresh current dir
 setInterval(() => { 
-    ipcRenderer.send('readFiles');
+    window.api.send('readFiles');
 }, 500);
 
-ipcRenderer.on('readFilesRes', (event, data) => {
+window.api.receive('readFilesRes', (data) => {
     let curentNode = $("#workingDirContainer").text('');
     ifDir(data, curentNode);
 });
 
-ipcRenderer.on('readArchiveFilesRes', (event, data) => {
+window.api.receive('readArchiveFilesRes', (data) => {
     let curentNode = $("#archiveDirContainer").text('');
     ifDir(data, curentNode);
 });
@@ -44,7 +43,7 @@ function ifDir(items, lastNode){
 }
 
 // Event watch
-ipcRenderer.on('refresh', (event, data) => {
+window.api.receive('refresh', (data) => {
 
     if(!data.data.project){
 
@@ -67,6 +66,7 @@ ipcRenderer.on('refresh', (event, data) => {
         $('#info #created_at').text("");
         $('#info #summary').text("");
         $('#info #description').text("");
+        $("#archiveDirContainer").text('');
 
         toggleFlash("Archive does not exist in this directory.", {
             color: "white",
@@ -82,11 +82,11 @@ ipcRenderer.on('refresh', (event, data) => {
 
 // Archive events
 async function setDirectory() {
-    await ipcRenderer.send('setDirectory');
+    await window.api.send('setDirectory');
 }
 
 async function createArchive(){
-    await ipcRenderer.send('createArchive', {
+    await window.api.send('createArchive', {
         author: $('#overlay #container #archive-author').val(),
         project: $('#overlay #container #archive-name').val()
     });
@@ -109,7 +109,7 @@ async function destroyArchive(){
             backgroundColor: "tomato"
         });
     } else {
-        let status = await ipcRenderer.send('destroyArchive', {});
+        let status = await window.api.send('destroyArchive', {});
     }
 }
 
@@ -127,7 +127,7 @@ async function createRecord(){
             backgroundColor: "tomato"
         });
     } else {
-        await ipcRenderer.send('createRecord', {
+        await window.api.send('createRecord', {
             summary: $('#new-record #summary').val(),
             description: $('#new-record #description').val()
         });
@@ -140,7 +140,7 @@ async function createRecord(){
 
 async function restoreRecord(){
     if(store.data.selectedRecordKey){
-        await ipcRenderer.send('restoreRecord', {
+        await window.api.send('restoreRecord', {
             archiveId: String(store.data.selectedRecordKey)
         });
     } else {
@@ -153,7 +153,7 @@ async function restoreRecord(){
 
 async function restoreRecordFull(){
     if(store.data.selectedRecordKey){
-        await ipcRenderer.send('restoreRecordFull', {
+        await window.api.send('restoreRecordFull', {
             archiveId: String(store.data.selectedRecordKey)
         });
     } else {
@@ -166,7 +166,7 @@ async function restoreRecordFull(){
 
 async function destroyRecord(){
     if(store.data.selectedRecordKey){
-        await ipcRenderer.send('destroyRecord', {
+        await window.api.send('destroyRecord', {
             archiveId: String(store.data.selectedRecordKey)
         });
 
@@ -276,7 +276,7 @@ function showRecord(key){
         $('#info #description').text(record.description);
     }
 
-    ipcRenderer.send('readArchiveFiles', {record: key});
+    window.api.send('readArchiveFiles', {record: key});
 }
 
 function refreshData(){
