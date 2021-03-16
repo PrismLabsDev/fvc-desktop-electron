@@ -1,23 +1,61 @@
 const {ipcRenderer, dialog} = require('electron');
 
-const store = {
-    data: {},
+let store = {
+    data: {
+        project: null,
+        author: null,
+        created_at: null,
+        dir: null,
+    },
+    logs: {},
+    workingDir: []
 };
+
+//Refresh current dir
+setInterval(() => { 
+    ipcRenderer.send('readFiles');
+}, 500);
+
+ipcRenderer.on('readFilesRes', (event, data) => {
+    let curentNode = $("#workingDirContainer").text('');
+    ifDir(data, curentNode);
+});
+
+ipcRenderer.on('readArchiveFilesRes', (event, data) => {
+    let curentNode = $("#archiveDirContainer").text('');
+    ifDir(data, curentNode);
+});
+
+function ifDir(items, lastNode){
+
+    Object.keys(items).forEach((itemKey) => {
+
+        item = items[itemKey];
+
+        if (typeof item == "object"){
+            let folderElTemplate = `<div class="margin-left dirItem"><div>${itemKey}<svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div></div>`;
+            let folderEl = $(folderElTemplate).appendTo(lastNode);
+            ifDir(item, folderEl)
+        } else {
+            let fileTemplate=`<div class="margin-left">${itemKey}</div>`;
+            $(fileTemplate).appendTo(lastNode);
+        }
+    });
+}
 
 // Event watch
 ipcRenderer.on('refresh', (event, data) => {
-    if(!data.logs){
+
+    if(!data.data.project){
 
         // reset store
         store.data.project = null;
         store.data.author = null;
         store.data.created_at = null;
-        store.data.directory = null;
-        store.data.logs = {};
+        store.data.dir = data.data.dir;
+        store.logs = {};
 
-        store.data.directory = data.directory;
-
-        $('#directory').text(data.directory);
+        $('#directory').text(data.data.dir);
         $('#project').empty();
         $('#author').empty();
         $('#created_at').empty();
@@ -35,7 +73,7 @@ ipcRenderer.on('refresh', (event, data) => {
             backgroundColor: "tomato"
         });
     } else {
-        store.data = data;
+        store = data;
         refreshData();
     }
 });
@@ -44,7 +82,7 @@ ipcRenderer.on('refresh', (event, data) => {
 
 // Archive events
 async function setDirectory() {
-    let dir = await ipcRenderer.send('setDirectory');
+    await ipcRenderer.send('setDirectory');
 }
 
 async function createArchive(){
@@ -60,7 +98,7 @@ async function createArchive(){
 }
 
 async function destroyArchive(){
-    if (!store.data.directory) {
+    if (!store.data.dir) {
         toggleFlash("No directory as been selected.", {
             color: "white",
             backgroundColor: "tomato"
@@ -78,7 +116,7 @@ async function destroyArchive(){
 
 // Record events
 async function createRecord(){
-    if (!store.data.directory) {
+    if (!store.data.dir) {
         toggleFlash("No directory as been selected.", {
             color: "white",
             backgroundColor: "tomato"
@@ -101,29 +139,50 @@ async function createRecord(){
 }
 
 async function restoreRecord(){
-    await ipcRenderer.send('restoreRecord', {
-        archiveId: String(store.selectedRecordKey)
-    });
+    if(store.data.selectedRecordKey){
+        await ipcRenderer.send('restoreRecord', {
+            archiveId: String(store.data.selectedRecordKey)
+        });
+    } else {
+        toggleFlash("Archive record has not been selected.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    }
 }
 
 async function restoreRecordFull(){
-    await ipcRenderer.send('restoreRecordFull', {
-        archiveId: String(store.selectedRecordKey)
-    });
+    if(store.data.selectedRecordKey){
+        await ipcRenderer.send('restoreRecordFull', {
+            archiveId: String(store.data.selectedRecordKey)
+        });
+    } else {
+        toggleFlash("Archive record has not been selected.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    }
 }
 
 async function destroyRecord(){
-    await ipcRenderer.send('destroyRecord', {
-        archiveId: String(store.selectedRecordKey)
-    });
+    if(store.data.selectedRecordKey){
+        await ipcRenderer.send('destroyRecord', {
+            archiveId: String(store.data.selectedRecordKey)
+        });
 
-    store.selectedRecordKey = null;
+        store.data.selectedRecordKey = null;
 
-    // Update view
-    $('#info #id').text("");
-    $('#info #created_at').text("");
-    $('#info #summary').text("");
-    $('#info #description').text("");
+        // Update view
+        $('#info #id').text("");
+        $('#info #created_at').text("");
+        $('#info #summary').text("");
+        $('#info #description').text("");
+    } else {
+        toggleFlash("Archive record has not been selected.", {
+            color: "white",
+            backgroundColor: "tomato"
+        });
+    }
 }
 
 
@@ -142,7 +201,7 @@ function daysFrom(data){
 }
 
 function overlayOn() {
-    if (!store.data.directory) {
+    if (!store.data.dir) {
         toggleFlash("No directory as been selected.", {
             color: "white",
             backgroundColor: "tomato"
@@ -155,7 +214,7 @@ function overlayOn() {
     } else {
         $(`#overlay`).addClass("overlay-show");
 
-        let archivePath = store.data.directory;
+        let archivePath = store.data.dir;
         let folder = [];
 
         if(archivePath.includes("\\")){
@@ -197,11 +256,11 @@ function toggleFlash(message, style = null){
 function showRecord(key){
 
     // remove old highlight record
-    $(`#records #${store.selectedRecordKey}`).removeClass("highlightRecord");
+    $(`#records #${store.data.selectedRecordKey}`).removeClass("highlightRecord");
 
     // Log key in store
-    store.selectedRecordKey = key;
-    let record = store.data.logs[key];
+    store.data.selectedRecordKey = key;
+    let record = store.logs[key];
 
     // highlight new record 
     $(`#records #${key}`).addClass("highlightRecord");
@@ -216,18 +275,20 @@ function showRecord(key){
     } else {
         $('#info #description').text(record.description);
     }
+
+    ipcRenderer.send('readArchiveFiles', {record: key});
 }
 
 function refreshData(){
 
-    let logs = store.data.logs;
+    let logs = store.logs;
 
-    $('#directory').text(store.data.directory);
+    $('#directory').text(store.data.dir);
     $('#project').text(store.data.project);
     $('#author').text(store.data.author);
     $('#created_at').text(dateToReadable(store.data.created_at));
 
-    keys = Object.keys(store.data.logs).sort((a, b) => {
+    keys = Object.keys(store.logs).sort((a, b) => {
         return b-a;
     });
 

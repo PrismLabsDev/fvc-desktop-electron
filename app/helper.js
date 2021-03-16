@@ -4,24 +4,26 @@ const store = require('./store.js');
 
 function logFileTemplate(){
     return {
-        project: null,
-        author: null,
-        created_at: null,
-        dir: null,
+        data: {
+            project: null,
+            author: null,
+            created_at: null,
+            dir: null,
+        },
         logs: {}
     }
 }
 
 function resetStore(){
-    store.project = null;
-    store.author = null;
-    store.created_at = null;
-    store.dir = null;
+    store.data.project = null;
+    store.data.author = null;
+    store.data.created_at = null;
+    store.data.dir = null;
     store.logs = {};
 }
 
 function currentDir(){
-    return store.dir;
+    return String(store.data.dir);
 }
 
 function archiveDir(){
@@ -48,10 +50,16 @@ function readLog(){
     if(archiveExists){
         let logFileRaw = fs.readFileSync(path.join(currentDir(), '.fvc', 'log.json'));
         let logFile = JSON.parse(logFileRaw);
-        logFile.directory = currentDir();
+        logFile.data.dir = currentDir();
+        logFile.workingDir = getAllNonIgnoredFiles();
         return logFile;
     } else {
-        return {directory: currentDir()};
+        return {
+            data: { 
+                dir: currentDir()
+            },
+            workingDir: getAllNonIgnoredFiles()
+        };
     }
 }
 
@@ -69,26 +77,6 @@ function getAllFiles(dirPath = currentDir(), arrayOfFiles) {
             arrayOfFiles = getAllFiles(path.join(dirPath, file), arrayOfFiles);
         } else {
             arrayOfFiles.push(path.join(dirPath, file));
-        }
-    });
-
-    return arrayOfFiles;
-}
-
-function getAllNonIgnoredFiles(dirPath = currentDir(), arrayOfFiles) {
-
-    let ignoreFiles = getIgnoreFiles(dirPath);
-
-    let files = fs.readdirSync(dirPath);
-    arrayOfFiles = arrayOfFiles || [];
-
-    files.forEach((file) => {
-        if(!ignoreFiles.includes(path.join(dirPath, file))){
-            if (fs.statSync(path.join(dirPath, file)).isDirectory()) {
-                arrayOfFiles = getAllFiles(path.join(dirPath, file), arrayOfFiles);
-            } else {
-                arrayOfFiles.push(path.join(dirPath, file));
-            }
         }
     });
 
@@ -116,6 +104,65 @@ function getIgnoreFiles(dirPath = currentDir()){
     }
 }
 
+function getAllNonIgnoredFiles(dirPath = currentDir(), arrayOfFiles) {
+
+    let ignoreFiles = getIgnoreFiles(dirPath);
+
+    let files = fs.readdirSync(dirPath);
+    arrayOfFiles = arrayOfFiles || [];
+
+    files.forEach((file) => {
+        if(!ignoreFiles.includes(path.join(dirPath, file))){
+            if (fs.statSync(path.join(dirPath, file)).isDirectory()) {
+                arrayOfFiles = getAllFiles(path.join(dirPath, file), arrayOfFiles);
+            } else {
+                arrayOfFiles.push(path.join(dirPath, file));
+            }
+        }
+    });
+
+    return arrayOfFiles;
+}
+
+function getAllNonIgnoredFilesAsObject(dirPath = currentDir()) {
+
+    let obj = {};
+
+    let allFiles = getAllNonIgnoredFiles(dirPath);
+        allFiles.forEach((file, index) => {
+        if (process.platform === "win32"){
+            file = file.replace(`${dirPath}\\`, '');
+            file = file.split('\\');
+        } else {
+            file = file.replace(`${dirPath}/`, '');
+            file = file.split('/');
+        }
+
+        addProps(obj, file, true);
+    });
+
+    return obj;
+}
+
+function addProps(obj, arr, val) {
+
+    if (typeof arr == 'string') {
+        arr = arr.split(".");
+    }
+
+    obj[arr[0]] = obj[arr[0]] || {};
+    let tmpObj = obj[arr[0]];
+
+    if (arr.length > 1) {
+        arr.shift();
+        addProps(tmpObj, arr, val);
+    } else {
+        obj[arr[0]] = val;
+    }
+
+    return obj;
+}
+
 module.exports = {
     logFileTemplate,
     resetStore,
@@ -126,6 +173,7 @@ module.exports = {
     readLog,
     writeLog,
     getAllFiles,
+    getIgnoreFiles,
     getAllNonIgnoredFiles,
-    getIgnoreFiles
+    getAllNonIgnoredFilesAsObject
 };

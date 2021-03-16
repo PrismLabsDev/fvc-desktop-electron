@@ -142,6 +142,9 @@ button.red:active{
     border: 1px solid var(--accent-blue) !important;
 }
 
+.margin-left {
+    margin-left: 20px;
+}
 
 
 /* Main layout styles */
@@ -153,12 +156,12 @@ main {
     margin: 0;
 
     display: grid;
-    grid-template-columns: 250px 1fr 1fr 1fr;
+    grid-template-columns: 250px 250px 1fr 1fr 1fr;
     grid-template-rows: 50px auto 200px;
     grid-template-areas:
-    'top-bar top-bar top-bar top-bar'
-    'records details details details'
-    'new-record details details details';
+    'top-bar top-bar top-bar top-bar top-bar'
+    'records dir details details details'
+    'new-record dir details details details';
 
     background-color: var(--main-medium-blue);
 }
@@ -185,6 +188,22 @@ main > #records {
     flex-direction: column;
     padding: 0px;
     overflow-y: auto;
+}
+
+main > #dir {
+    grid-area: dir;
+    background-color: var(--main-medium-blue);
+    display: flex;
+    flex-direction: column;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    'dir-working'
+    'dir-archive';
+
+    color: grey;
 }
 
 main > #new-record {
@@ -247,6 +266,82 @@ main > #records .record .summary {
 
 main > #records .record .days {
     margin-left: 10px;
+}
+
+
+
+main > #dir .dirItem svg {
+    vertical-align: middle;
+    padding-left: 5px;
+    width: 12px;
+}
+
+/* Workdir */
+main > #dir > #workingDir {
+    grid-area: dir-working;
+    display: flex;
+    flex-direction: column;
+    height: calc(50vh - 50px);
+    overflow: scroll;
+    min-height: 150px;
+}
+
+main > #dir > #workingDir > p {
+    text-align: center;
+    color: grey;
+    font-size: 12px;
+    margin: 0px;
+    padding: 3px;
+}
+
+main > #dir > #workingDir > #workingDirContainer {
+    background-color: var(--main-dark-blue);
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+    border-radius: 5px;
+    height: 100%;
+    overflow: scroll;
+    border: 1px solid black;
+}
+
+main > #dir > #workingDir > #workingDirContainer > div {
+    margin-left: 0px !important;
+}
+
+
+
+/* Archivedir */
+main > #dir > #archiveDir {
+    grid-area: dir-archive;
+    display: flex;
+    flex-direction: column;
+    height: calc(50vh - 50px);
+    overflow: scroll;
+    min-height: 150px;
+}
+
+main > #dir > #archiveDir > p {
+    text-align: center;
+    color: grey;
+    font-size: 12px;
+    margin: 0px;
+    padding: 3px;
+}
+
+main > #dir > #archiveDir > #archiveDirContainer {
+    background-color: var(--main-dark-blue);
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+    border-radius: 5px;
+    height: 100%;
+    overflow: scroll;
+    border: 1px solid black;
+}
+
+main > #dir > #archiveDir > #archiveDirContainer > div {
+    margin-left: 0px !important;
 }
 
 
@@ -443,4 +538,54 @@ main > #details > #info > div > p {
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
+}
+
+
+
+/* Media styles */
+
+/* Smaller than  Info*/
+@media screen and (max-width: 500px) {
+    main {
+        display: grid;
+        grid-template-columns: 250px 250px;
+        grid-template-rows: 50px auto 200px;
+        grid-template-areas:
+        'top-bar top-bar'
+        'records dir'
+        'new-record dir';
+    }
+
+    main > #top-bar > div:not(:first-child) {
+        display: none;
+    }
+
+    main > #details {
+        display: none;
+    }
+}
+
+/* Smaller than  Directory*/
+@media screen and (max-width: 250px) {
+    main {
+        display: grid;
+        grid-template-columns: 250px;
+        grid-template-rows: 50px auto 200px;
+        grid-template-areas:
+        'top-bar'
+        'records'
+        'new-record';
+    }
+
+    main > #top-bar > div:not(:first-child) {
+        display: none;
+    }
+
+    main > #details {
+        display: none;
+    }
+
+    main > #dir {
+        display: none;
+    }
 }
