@@ -21,6 +21,10 @@
 <hr/>
 <br/>
 
+<a align="middle" href="https://blueorbitmedia.com/fvc/"><img width="50" src="https://blueorbitmedia.com/wp-content/uploads/2021/01/logo_plain-2048x1055.png"/></a> More info at [Blue Orbit Media](https://blueorbitmedia.com/fvc/)
+
+
+
 **This is the latest version of the FVC (File Version Control) tool. This version of FVC focuses on the GUI interface.**
 
 File Version Control (FVC) is a tool designed to give automated version control abilities (similar to Git) to those working with binary and media files, where traditional version control is not possible. This package is designed to increase productivity and organization, not to reduce the size of archived files similar to git.
