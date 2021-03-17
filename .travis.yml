@@ -1,0 +1,15 @@
+language: node_js
+
+node_js:
+  - '14.16.0'
+
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode12.4
+      language: node_js
+      node_js: "14.16.0"
+      addons:
+        chrome: stable
+      script:
+        - npm test
