@@ -27,7 +27,8 @@
   },
   "homepage": "https://github.com/jwoodrow99/fvc#readme",
   "dependencies": {
-    "fs-extra": "^9.1.0"
+    "fs-extra": "^9.1.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "electron": "^12.0.0",
