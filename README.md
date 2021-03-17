@@ -15,6 +15,7 @@
 
 <div align="center">
   <a href="https://circleci.com/gh/jwoodrow99/fvc"><img src="https://circleci.com/gh/jwoodrow99/fvc.svg?style=svg"></a>
+  <a href="https://travis-ci.com/github/jwoodrow99/fvc"><img src="https://travis-ci.com/jwoodrow99/fvc.svg?branch=main"></a>
 </div>
 
 <br/>
