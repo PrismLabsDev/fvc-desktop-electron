@@ -1,13 +1,14 @@
 
 let store = {
-    data: {
+    meta: {
         project: null,
         author: null,
         created_at: null,
-        dir: null,
+        directory: null,
     },
+    tracked: {},
     logs: {},
-    workingDir: []
+    workingDirectory: []
 };
 
 //Refresh current dir
@@ -45,16 +46,17 @@ function ifDir(items, lastNode){
 // Event watch
 window.api.receive('refresh', (data) => {
 
-    if(!data.data.project){
+    if(!data.meta.project){
 
         // reset store
-        store.data.project = null;
-        store.data.author = null;
-        store.data.created_at = null;
-        store.data.dir = data.data.dir;
+        store.meta.project = null;
+        store.meta.author = null;
+        store.meta.created_at = null;
+        store.meta.directory = data.meta.directory;
+        store.tracked = {};
         store.logs = {};
 
-        $('#directory').text(data.data.dir);
+        $('#directory').text(data.meta.directory);
         $('#project').empty();
         $('#author').empty();
         $('#created_at').empty();
@@ -98,12 +100,12 @@ async function createArchive(){
 }
 
 async function destroyArchive(){
-    if (!store.data.dir) {
+    if (!store.meta.directory) {
         toggleFlash("No directory as been selected.", {
             color: "white",
             backgroundColor: "tomato"
         });
-    } else if(!store.data.project){
+    } else if(!store.meta.project){
         toggleFlash("Archive does not exists in directory.", {
             color: "white",
             backgroundColor: "tomato"
@@ -116,12 +118,12 @@ async function destroyArchive(){
 
 // Record events
 async function createRecord(){
-    if (!store.data.dir) {
+    if (!store.meta.directory) {
         toggleFlash("No directory as been selected.", {
             color: "white",
             backgroundColor: "tomato"
         });
-    } else if(!store.data.project){
+    } else if(!store.meta.project){
         toggleFlash("Archive does not exists in directory.", {
             color: "white",
             backgroundColor: "tomato"
@@ -136,12 +138,14 @@ async function createRecord(){
         $('#new-record #summary').val("");
         $('#new-record #description').val("");
     }
+
+    $("#archiveDirContainer").text('');
 }
 
 async function restoreRecord(){
-    if(store.data.selectedRecordKey){
+    if(store.meta.selectedRecordKey){
         await window.api.send('restoreRecord', {
-            archiveId: String(store.data.selectedRecordKey)
+            archiveId: String(store.meta.selectedRecordKey)
         });
     } else {
         toggleFlash("Archive record has not been selected.", {
@@ -152,9 +156,9 @@ async function restoreRecord(){
 }
 
 async function restoreRecordFull(){
-    if(store.data.selectedRecordKey){
+    if(store.meta.selectedRecordKey){
         await window.api.send('restoreRecordFull', {
-            archiveId: String(store.data.selectedRecordKey)
+            archiveId: String(store.meta.selectedRecordKey)
         });
     } else {
         toggleFlash("Archive record has not been selected.", {
@@ -162,15 +166,17 @@ async function restoreRecordFull(){
             backgroundColor: "tomato"
         });
     }
+
+    $("#archiveDirContainer").text('');
 }
 
 async function destroyRecord(){
-    if(store.data.selectedRecordKey){
+    if(store.meta.selectedRecordKey){
         await window.api.send('destroyRecord', {
-            archiveId: String(store.data.selectedRecordKey)
+            archiveId: String(store.meta.selectedRecordKey)
         });
 
-        store.data.selectedRecordKey = null;
+        store.meta.selectedRecordKey = null;
 
         // Update view
         $('#info #id').text("");
@@ -183,6 +189,8 @@ async function destroyRecord(){
             backgroundColor: "tomato"
         });
     }
+
+    $("#archiveDirContainer").text('');
 }
 
 
@@ -201,12 +209,12 @@ function daysFrom(data){
 }
 
 function overlayOn() {
-    if (!store.data.dir) {
+    if (!store.meta.directory) {
         toggleFlash("No directory as been selected.", {
             color: "white",
             backgroundColor: "tomato"
         });
-    } else if(store.data.project){
+    } else if(store.meta.project){
         toggleFlash("Archive already exists in directory.", {
             color: "white",
             backgroundColor: "tomato"
@@ -214,7 +222,7 @@ function overlayOn() {
     } else {
         $(`#overlay`).addClass("overlay-show");
 
-        let archivePath = store.data.dir;
+        let archivePath = store.meta.directory;
         let folder = [];
 
         if(archivePath.includes("\\")){
@@ -256,10 +264,10 @@ function toggleFlash(message, style = null){
 function showRecord(key){
 
     // remove old highlight record
-    $(`#records #${store.data.selectedRecordKey}`).removeClass("highlightRecord");
+    $(`#records #${store.meta.selectedRecordKey}`).removeClass("highlightRecord");
 
     // Log key in store
-    store.data.selectedRecordKey = key;
+    store.meta.selectedRecordKey = key;
     let record = store.logs[key];
 
     // highlight new record 
@@ -283,10 +291,10 @@ function refreshData(){
 
     let logs = store.logs;
 
-    $('#directory').text(store.data.dir);
-    $('#project').text(store.data.project);
-    $('#author').text(store.data.author);
-    $('#created_at').text(dateToReadable(store.data.created_at));
+    $('#directory').text(store.meta.directory);
+    $('#project').text(store.meta.project);
+    $('#author').text(store.meta.author);
+    $('#created_at').text(dateToReadable(store.meta.created_at));
 
     keys = Object.keys(store.logs).sort((a, b) => {
         return b-a;

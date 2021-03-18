@@ -7,9 +7,9 @@ module.exports = (project, author) => {
     let createDate = helper.currentDate();
 
     // Save inputs to log file
-    logFileInit.data.project = project;
-    logFileInit.data.author = author;
-    logFileInit.data.created_at = createDate;
+    logFileInit.meta.project = project;
+    logFileInit.meta.author = author;
+    logFileInit.meta.created_at = createDate;
 
     if (!fs.existsSync(helper.archiveDir())){
         fs.mkdirSync(helper.archiveDir());

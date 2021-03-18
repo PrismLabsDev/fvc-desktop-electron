@@ -17,7 +17,7 @@ ipcMain.on('setDirectory', async (event, data) => {
     let dir = await dialog.showOpenDialog({ properties: ['openDirectory'] });
     if(!dir.canceled){
         await helper.resetStore();
-        store.data.dir = await String(dir.filePaths[0]);
+        store.meta.directory = String(dir.filePaths[0]);
         event.sender.send('refresh', helper.readLog());
     }
 });
@@ -36,7 +36,7 @@ ipcMain.on('destroyArchive', async (event, data) => {
 });
 
 ipcMain.on('readFiles', async (event, data) => {
-    if (store.data.dir){
+    if (store.meta.directory){
         let files = await helper.getAllNonIgnoredFilesAsObject();
         event.sender.send('readFilesRes', files);
     }

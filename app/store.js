@@ -1,10 +1,11 @@
 module.exports = {
-    data: {
+    meta: {
         project: null,
         author: null,
         created_at: null,
-        dir: null,
+        directory: null,
     },
+    tracked: {},
     logs: {},
-    workingDir: []
+    workingDirectory: []
 };

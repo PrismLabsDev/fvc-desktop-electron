@@ -23,7 +23,7 @@ function createWindow () {
         }
     });
 
-    // window.webContents.openDevTools()
+    window.webContents.openDevTools();
     window.loadFile('./resources/view/index.html');
 }
 

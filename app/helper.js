@@ -4,26 +4,30 @@ const store = require('./store.js');
 
 function logFileTemplate(){
     return {
-        data: {
+        meta: {
             project: null,
             author: null,
             created_at: null,
-            dir: null,
+            directory: null,
         },
-        logs: {}
+        tracked: {},
+        logs: {},
+        workingDirectory: []
     }
 }
 
 function resetStore(){
-    store.data.project = null;
-    store.data.author = null;
-    store.data.created_at = null;
-    store.data.dir = null;
+    store.meta.project = null;
+    store.meta.author = null;
+    store.meta.created_at = null;
+    store.meta.directory = null;
+    store.tracked = {};
     store.logs = {};
+    workingDirectory = [];
 }
 
 function currentDir(){
-    return String(store.data.dir);
+    return String(store.meta.directory);
 }
 
 function archiveDir(){
@@ -50,15 +54,15 @@ function readLog(){
     if(archiveExists){
         let logFileRaw = fs.readFileSync(path.join(currentDir(), '.fvc', 'log.json'));
         let logFile = JSON.parse(logFileRaw);
-        logFile.data.dir = currentDir();
-        logFile.workingDir = getAllNonIgnoredFiles();
+        logFile.meta.directory = currentDir();
+        logFile.workingDirectory = getAllNonIgnoredFiles();
         return logFile;
     } else {
         return {
-            data: { 
-                dir: currentDir()
+            meta: { 
+                directory: currentDir()
             },
-            workingDir: getAllNonIgnoredFiles()
+            workingDirectory: getAllNonIgnoredFiles()
         };
     }
 }
