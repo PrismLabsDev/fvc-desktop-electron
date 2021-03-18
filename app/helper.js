@@ -109,40 +109,78 @@ function getIgnoreFiles(dirPath = currentDir()){
 }
 
 function getAllNonIgnoredFiles(dirPath = currentDir(), arrayOfFiles) {
+    if(fs.existsSync(dirPath)){
 
-    let ignoreFiles = getIgnoreFiles(dirPath);
+        let ignoreFiles = getIgnoreFiles(dirPath);
+        let files = fs.readdirSync(dirPath);
 
-    let files = fs.readdirSync(dirPath);
-    arrayOfFiles = arrayOfFiles || [];
+        arrayOfFiles = arrayOfFiles || [];
 
-    files.forEach((file) => {
-        if(!ignoreFiles.includes(path.join(dirPath, file))){
-            if (fs.statSync(path.join(dirPath, file)).isDirectory()) {
-                arrayOfFiles = getAllFiles(path.join(dirPath, file), arrayOfFiles);
-            } else {
-                arrayOfFiles.push(path.join(dirPath, file));
+        files.forEach((file) => {
+            if(!ignoreFiles.includes(path.join(dirPath, file))){
+                if (fs.statSync(path.join(dirPath, file)).isDirectory()) {
+                    arrayOfFiles = getAllFiles(path.join(dirPath, file), arrayOfFiles);
+                } else {
+                    arrayOfFiles.push(path.join(dirPath, file));
+                }
             }
-        }
-    });
+        });
 
-    return arrayOfFiles;
+        return arrayOfFiles;
+
+    } else {
+
+        return null;
+
+    }
 }
 
 function getAllNonIgnoredFilesAsObject(dirPath = currentDir()) {
 
     let obj = {};
 
-    let allFiles = getAllNonIgnoredFiles(dirPath);
-        allFiles.forEach((file, index) => {
+    let filesRaw = getAllNonIgnoredFiles(dirPath);
+    let logFile = readLog();
+    let relFiles = [];
+
+    // Process path to work with mindows and mac
+    if (process.platform === "win32"){
+        filesRaw.forEach((i, index, arr) => {
+            relFiles.push(i.replace(path.join(currentDir(), '\\'), ''));
+        });
+    } else {
+        filesRaw.forEach((i, index, arr) => {
+            relFiles.push(i.replace(path.join(currentDir(), '/'), ''));
+        });
+    }
+
+    if(!filesRaw){
+        return null;
+    }
+
+    filesRaw.forEach(async (file) => {
+
+        let relFile;
+        let fileArr;
+
         if (process.platform === "win32"){
-            file = file.replace(`${dirPath}\\`, '');
-            file = file.split('\\');
+            relFile = file.replace(`${dirPath}\\`, '');
+            fileArr = relFile.split('\\');
         } else {
-            file = file.replace(`${dirPath}/`, '');
-            file = file.split('/');
+            relFile = file.replace(`${dirPath}/`, '');
+            fileArr = relFile.split('/');
         }
 
-        addProps(obj, file, true);
+        // Get file state
+        let fileStats = await fs.statSync(file);
+
+        if(!logFile.tracked[relFile]){
+            addProps(obj, fileArr, "c");
+        } else if(fileStats.mtime.getTime() > logFile.tracked[relFile].updated_at){
+            addProps(obj, fileArr, "u");
+        } else {
+            addProps(obj, fileArr, null);
+        }
     });
 
     return obj;
