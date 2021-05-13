@@ -11,7 +11,7 @@ let store = {
     workingDirectory: []
 };
 
-//Refresh current dir
+// Refresh current dir
 setInterval(() => { 
     window.api.send('readFiles');
 }, 500);
