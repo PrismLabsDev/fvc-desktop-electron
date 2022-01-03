@@ -22,7 +22,7 @@
 <hr/>
 <br/>
 
-<a align="middle" href="https://blueorbitmedia.com/fvc/"><img width="50" src="https://blueorbitmedia.com/wp-content/uploads/2021/01/logo_plain-2048x1055.png"/></a> More info at [Blue Orbit Media](https://blueorbitmedia.com/fvc/)
+<a align="middle" href="https://blueorbitmedia.com/fvc/"><img width="50" src="https://blueorbitmedia.com/wp-content/uploads/2021/10/transparent-rectangle.png"/></a> More info at [Blue Orbit Media](https://blueorbitmedia.com/fvc/)
 
 
 
