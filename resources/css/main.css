@@ -541,6 +541,30 @@ main > #details > #info > div > p {
 }
 
 
+/* Custom Scroll bar */
+/* width */
+#workingDirContainer::-webkit-scrollbar, #archiveDirContainer::-webkit-scrollbar{
+    width: 7px;
+    height: 0px;
+}
+
+/* Track */
+#workingDirContainer::-webkit-scrollbar-track, #archiveDirContainer::-webkit-scrollbar-track {
+    background: var(--main-dark-blue); 
+}
+ 
+/* Handle */
+#workingDirContainer::-webkit-scrollbar-thumb, #archiveDirContainer::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 5px;;
+}
+
+/* Handle on hover */
+#workingDirContainer::-webkit-scrollbar-thumb:hover, #archiveDirContainer::-webkit-scrollbar-thumb:hover {
+  background: #888; 
+}
+
+
 
 /* Media styles */
 

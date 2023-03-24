@@ -1,6 +1,6 @@
 {
   "name": "fvc",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Main FVC user application repo",
   "main": "main.js",
   "scripts": {
@@ -13,19 +13,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jwoodrow99/fvc.git"
+    "url": "https://github.com/PrismLabsDev/fvc-desktop-electron"
   },
   "keywords": [],
   "author": {
     "name": "Jack Woodrow",
-    "email": "jackwoodrow@blueorbitmedia.com",
-    "url": "https://blueorbitmedia.com"
+    "email": "jackwoodrow99@gmail.com",
+    "url": "https://fvc.prismlabs.dev"
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jwoodrow99/fvc/issues"
+    "url": "https://github.com/PrismLabsDev/fvc-desktop-electron/issues"
   },
-  "homepage": "https://github.com/jwoodrow99/fvc#readme",
+  "homepage": "https://fvc.prismlabs.dev",
   "dependencies": {
     "fs-extra": "^9.1.0"
   },
@@ -36,7 +36,7 @@
     "spectron": "^14.0.0"
   },
   "build": {
-    "appId": "com.blueorbitmedia.fvc",
+    "appId": "com.prismLabs.fvc",
     "mac": {
       "category": "public.app-category.utilities"
     },
